@@ -1,0 +1,128 @@
+{
+  "menu": [
+    {
+      "url": "/sadmin/",
+      "icon": "menu-icon tf-icons ti ti-home",
+      "name": "Dashboard",
+      "slug": "dashboard-analytics"
+    },
+    {
+      "name": "Hospitals",
+      "icon": "menu-icon tf-icons ti ti-building-hospital",
+      "slug": "hospital",
+      "submenu": [
+        {
+          "url": "/sadmin/hospital/add-hospital",
+          "name": "Add Hospital",
+          "icon": "menu-icon tf-icons ti ti-menu-2",
+          "slug": "add-hospital"
+        },
+        {
+          "url": "/sadmin/hospital/manage-hospital",
+          "name": "Manage Hospital",
+          "icon": "menu-icon tf-icons ti ti-menu-2",
+          "slug": "manage-hospital"
+        }
+      ]
+    },
+    {
+      "url": "/sadmin/users/manage-user",
+      "name": "List Of Users",
+      "icon": "menu-icon tf-icons ti ti-user",
+      "slug": "manage-user"
+    },
+    {
+      "url": "/sadmin/hospital/reviews",
+      "name": "Hospital Reviews",
+      "icon": "menu-icon tf-icons ti ti-star",
+      "slug": "index"
+    },
+    {
+      "url": "/sadmin/hospital/appointments",
+      "name": "Hospital Appointments",
+      "icon": "menu-icon tf-icons ti ti-checkup-list",
+      "slug": "appointments"
+    },
+    {
+      "name": "Business Listing",
+      "icon": "menu-icon tf-icons ti ti-report-analytics",
+      "slug": "business-listing",
+      "submenu": [
+        {
+          "url": "/sadmin/business-listing/add-business-listing",
+          "name": "Add Business Listing",
+          "icon": "menu-icon tf-icons ti ti-menu-2",
+          "slug": "add-business-listing"
+        },
+        {
+          "url": "/sadmin/business-listing/manage-business-listing",
+          "name": "Manage Business Listing",
+          "icon": "menu-icon tf-icons ti ti-menu-2",
+          "slug": "manage-business-listing"
+        }
+      ]
+    },
+    {
+      "url": "/sadmin/",
+      "name": "Doctor Listing",
+      "icon": "menu-icon tf-icons ti ti-stethoscope",
+      "slug": ""
+    },
+    {
+      "name": "Advertisements",
+      "icon": "menu-icon tf-icons ti ti-ad",
+      "slug": "advertisements",
+      "submenu": [
+        {
+          "url": "/sadmin/advertisements/add-advertisements",
+          "name": "Add Advertisements",
+          "icon": "menu-icon tf-icons ti ti-menu-2",
+          "slug": "add-advertisements"
+        },
+        {
+          "url": "/sadmin/advertisements/manage-advertisements",
+          "name": "Manage Advertisements",
+          "icon": "menu-icon tf-icons ti ti-menu-2",
+          "slug": "manage-advertisements"
+        }
+      ]
+    },
+    {
+      "name": "Settings",
+      "icon": "menu-icon tf-icons ti ti-settings",
+      "slug": "settings",
+      "submenu": [
+        {
+          "url": "/sadmin/settings/main-categories",
+          "name": "Main Categories",
+          "icon": "menu-icon tf-icons ti ti-menu-2",
+          "slug": "main-categories"
+        },
+        {
+          "url": "/sadmin/settings/business-categories",
+          "name": "Business Categories",
+          "icon": "menu-icon tf-icons ti ti-menu-2",
+          "slug": "business-categories"
+        },
+        {
+          "url": "/sadmin/settings/locality-city-state-country-master",
+          "name": "Locality City State Country Master",
+          "icon": "menu-icon tf-icons ti ti-menu-2",
+          "slug": "city-state-country-master"
+        },
+        {
+          "url": "/sadmin/settings/add-main-sub-categories",
+          "name": "Add Sub Category",
+          "icon": "menu-icon tf-icons ti ti-menu-2",
+          "slug": "add-main-sub-categories"
+        },
+        {
+          "url": "/sadmin/settings/manage-main-sub-categories",
+          "name": "Manage Sub Category",
+          "icon": "menu-icon tf-icons ti ti-menu-2",
+          "slug": "manage-main-sub-categories"
+        }
+      ]
+    }
+  ]
+}

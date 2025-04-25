@@ -1,0 +1,34 @@
+{
+  "data": [
+    [
+      "Penicillin",
+      "Rash, hives, shortness of breath",
+      "<button class='btn p-0 border-0'><img src='images/icons/edit.svg' /></button> <button class='btn p-0 border-0'><img src='images/icons/delete.svg' /></button>"     
+    ],   
+    [
+      "Ibuprofen",
+      "Swelling, stomach pain, difficulty breathing",
+       "<button class='btn p-0 border-0'><img src='images/icons/edit.svg' /></button> <button class='btn p-0 border-0'><img src='images/icons/delete.svg' /></button>"    
+    ],
+    [
+      "Aspirin",
+      "Nausea, skin rash, wheezing",
+      "<button class='btn p-0 border-0'><img src='images/icons/edit.svg' /></button> <button class='btn p-0 border-0'><img src='images/icons/delete.svg' /></button>"       
+    ],
+    [
+      "Amoxicillin",
+      "Itching, facial swelling, dizziness",
+      "<button class='btn p-0 border-0'><img src='images/icons/edit.svg' /></button> <button class='btn p-0 border-0'><img src='images/icons/delete.svg' /></button>"        
+    ],   
+    [
+      "Sulfa Drugs",
+      "Blisters, fever, joint pain",
+       "<button class='btn p-0 border-0'><img src='images/icons/edit.svg' /></button> <button class='btn p-0 border-0'><img src='images/icons/delete.svg' /></button>"   
+    ],
+    [
+      "Codeine",
+      "Vomiting, low blood pressure, difficulty breathing",
+       "<button class='btn p-0 border-0'><img src='images/icons/edit.svg' /></button> <button class='btn p-0 border-0'><img src='images/icons/delete.svg' /></button>"   
+    ]
+  ]
+}

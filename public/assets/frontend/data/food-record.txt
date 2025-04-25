@@ -1,0 +1,34 @@
+{
+  "data": [
+    [
+      "Penicillin",
+      "Rash, hives, shortness of breath",
+      "<button class='btn btn-icon p-0 border-0'><img src='images/icons/edit.svg' /></button> <button class='btn btn-icon p-0 border-0'><img src='images/icons/delete.svg' /></button>"     
+    ],   
+    [
+      "Shellfish",
+      "Nausea, vomiting, skin rash",
+       "<button class='btn btn-icon p-0 border-0'><img src='images/icons/edit.svg' /></button> <button class='btn btn-icon p-0 border-0'><img src='images/icons/delete.svg' /></button>"    
+    ],
+    [
+      "Milk",
+      "Stomach cramps, diarrhea, hives",
+      "<button class='btn btn-icon p-0 border-0'><img src='images/icons/edit.svg' /></button> <button class='btn btn-icon p-0 border-0'><img src='images/icons/delete.svg' /></button>"       
+    ],
+    [
+      "Wheat",
+      "Bloating, fatigue, headache",
+      "<button class='btn btn-icon p-0 border-0'><img src='images/icons/edit.svg' /></button> <button class='btn btn-icon p-0 border-0'><img src='images/icons/delete.svg' /></button>"        
+    ],   
+    [
+      "Pulses",
+      "Blisters, fever, joint pain",
+       "<button class='btn btn-icon p-0 border-0'><img src='images/icons/edit.svg' /></button> <button class='btn btn-icon p-0 border-0'><img src='images/icons/delete.svg' /></button>"   
+    ],
+    [
+      "Codeine",
+      "Vomiting, low blood pressure, difficulty breathing",
+       "<button class='btn btn-icon p-0 border-0'><img src='images/icons/edit.svg' /></button> <button class='btn btn-icon p-0 border-0'><img src='images/icons/delete.svg' /></button>"   
+    ]
+  ]
+}
