@@ -469,7 +469,7 @@ Route::prefix('doctor')->group(function () {
     Route::get('ajax-appointment', [DoctorController::class, 'getAppointments'])->name('doctor.getAppointments');
     Route::put('update-appointment/{id}', [DoctorController::class, 'updateAppointment'])->name('doctor.updateAppointment');
     Route::get('edit-appointment/{id}', [DoctorController::class, 'editGetAppointment'])->name('doctor.editGetAppointment');
-    Route::delete('/appointment/{id}', [DoctorController::class, 'deleteSocialMedia'])->name('appointment.delete');
+    Route::delete('/appointment/{id}', [DoctorController::class, 'deleteAppointment'])->name('appointment.delete');
 
     // Logout
   Route::get('logout', [DoctorController::class, 'doctor_logout'])->name('doctors.logout');

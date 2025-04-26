@@ -29,17 +29,25 @@
                                         <div class="autocomplete">
                                             <div class="search-widget bg-light border">
                                                 <div class="input-group">
-                                                    <input type="text" class="form-control" placeholder="Search Name"
-                                                        id="searchAppointmentName">
+                                                    <input type="text" class="form-control" placeholder="Search Day"
+                                                        id="searchAppointmentDay">
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-3">
                                         <div class="search-widget search-symptoms bg-light border">
                                             <div class="input-group">
-                                                <input type="text" class="form-control" id="searchAppointmentIcon"
-                                                    placeholder="Search Icon">
+                                                <input type="text" class="form-control" id="searchAppointmentFromTime"
+                                                    placeholder="Search From Time">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="search-widget search-symptoms bg-light border">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="searchAppointmentToTime"
+                                                    placeholder="Search To Time">
                                             </div>
                                         </div>
                                     </div>
@@ -123,11 +131,11 @@
 
                             <div class="col-lg-12">
                                 <label class="mb-2"> From Time<span class="text-danger">*</span></label>
-                                <input type="datetime" class="form-control form-input-control" name="name" placeholder="Enter From Time" required>
+                                <input type="time" class="form-control form-input-control" name="from_time" placeholder="Enter From Time" required>
                             </div>
                             <div class="col-lg-12">
                                 <label class="mb-2"> To Time<span class="text-danger">*</span></label>
-                                <input type="datetime" class="form-control form-input-control" name="icon" placeholder="Enter To Time" required>
+                                <input type="time" class="form-control form-input-control" name="to_time" placeholder="Enter To Time" required>
                             </div>
                         </div>
                         <div class="my-5">
@@ -169,11 +177,11 @@
                             </div>
                             <div class="col-lg-12">
                                 <label class="mb-2"> From Time<span class="text-danger">*</span></label>
-                                <input type="datetime" class="form-control form-input-control" name="from_time" id="from_time" required>
+                                <input type="time" class="form-control form-input-control" name="from_time" id="from_time" required>
                             </div>
                             <div class="col-lg-12">
                                 <label class="mb-2"> To Time<span class="text-danger">*</span></label>
-                                <input type="datetime" class="form-control form-input-control" name="to_time" id="to_time" required>
+                                <input type="time" class="form-control form-input-control" name="to_time" id="to_time" required>
                             </div>
                         </div>
 
@@ -217,17 +225,20 @@
                 },
                 {
                     data: 4
-                }
+                },
             ]
         });
         $(document).ready(function() {
 
             //filter
-            $('#searchAppointmentName').on('keyup', function() {
+            $('#searchAppointmentDay').on('keyup', function() {
                 table.column(1).search(this.value).draw();
             });
-            $('#searchAppointmentIcon').on('keyup', function() {
+            $('#searchAppointmentFromTime').on('keyup', function() {
                 table.column(2).search(this.value).draw();
+            });
+            $('#searchAppointmentToTime').on('keyup', function() {
+                table.column(3).search(this.value).draw();
             });
             // Handle form submission (to update data)
             $('#editForm').on('submit', function(e) {
@@ -277,7 +288,7 @@
                     // Populate the modal fields with the fetched data
                     $('#day').val(data.day);
                     $('#from_time').val(data.from_time);
-                    $('#to_time').val(to_time.to_time);
+                    $('#to_time').val(data.to_time);
                     $('#appointment_id').val(data.id);
 
                     // Open the modal

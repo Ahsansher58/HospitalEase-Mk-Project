@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use App\Models\Doctor;
 use App\Models\DoctorSocialMedia;
+use App\Models\DoctorAppointment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
@@ -222,17 +223,28 @@ class DoctorController extends Controller
   }
 
   public function getAppointments()
-  {
+  {     
+    $user = Auth::user();
     // Fetch medicines data from the database (example)
-    $appointments = DoctorAppointment::where('doctor_id', Auth::id())->orderBy('id', 'desc')->get();
+    $appointments = DoctorAppointment::leftJoin('doctors' , 'doctors.id' , 'doctor_appointments.doctor_id')
+    ->leftJoin('users' , 'users.id' , 'doctors.user_id')
+    ->select('doctor_appointments.*' , 'doctors.user_id')
+    ->where('doctors.user_id', $user->id)
+    ->orderBy('doctor_appointments.id', 'asc')
+    ->get();
 
     // Format the data to match the structure for DataTable
     $data = $appointments->map(function ($appointment) {
+      $from_time     = $appointment['from_time'];
+      $finalFromTime = date('h:i a', strtotime($from_time)); 
+      $to_time       = $appointment['to_time'];
+      $finalToTime   = date('h:i a', strtotime($to_time));
+
       return [
         $appointment->id,
         $appointment->day,
-        $appointment->from_time,
-        $appointment->to_time,
+        $finalFromTime,
+        $finalToTime,
         "<button class='btn p-0 border-0' onclick='edit_popup(" . $appointment->id . ")'><img src='" . asset('assets/frontend/images/icons/edit.svg') . "' /></button>
              <button class='btn p-0 border-0' onclick='delete_appointment(" . $appointment->id . ")'><img src='" . asset('assets/frontend/images/icons/delete.svg') . "' /></button>"
       ];
@@ -244,24 +256,44 @@ class DoctorController extends Controller
 
   public function appointment_store(Request $request)
   {
-    // Validate the fields
-    $validatedData = $request->validate([
-      'day'       => 'required|string|max:255',
-      'from_time' => 'required|string|max:255',
-      'to_time'   => 'required|string|max:255',
-    ]);
+      // Validate the fields
+      $validatedData = $request->validate([
+          'day'       => 'required|string|max:255',
+          'from_time' => 'required|string|max:255',
+          'to_time'   => 'required|string|max:255',
+      ]);
 
-    // Create a new record with the authenticated user's ID
-    DoctorAppointment::create([
-      'user_id'   => Auth::id(),
-      'day'       => $validatedData['day'],
-      'from_time' => $validatedData['from_time'],
-      'to_time'   => $validatedData['to_time'],
-    ]);
+      // Convert time to H:i:s format
+      $fromTime = date('H:i:s', strtotime($request->from_time));
+      $toTime   = date('H:i:s', strtotime($request->to_time));
 
-    // Redirect back with success message
-    return redirect()->route('doctor.social-media')->with('success', 'Appointment added successfully');
+      // Get the current doctor's record
+      $doctor = Doctor::where('user_id', Auth::id())->firstOrFail();
+
+      // Check if an appointment already exists for this doctor on this day
+      $existingAppointment = DoctorAppointment::where('doctor_id', $doctor->id)
+      ->where('day', $validatedData['day'])
+      ->first();
+
+      if ($existingAppointment) {
+          $existingAppointment->update([
+              'from_time' => $fromTime,
+              'to_time'   => $toTime,
+          ]);
+      } else {
+          // Create a new appointment
+          DoctorAppointment::create([
+              'doctor_id' => $doctor->id,
+              'day'       => $validatedData['day'],
+              'from_time' => $fromTime,
+              'to_time'   => $toTime,
+          ]);
+      }
+
+      // Redirect back with success message
+      return redirect()->route('doctor.appointments')->with('success', 'Appointment added successfully');
   }
+
 
   public function editGetAppointment($id)
   {
@@ -279,13 +311,34 @@ class DoctorController extends Controller
       'to_time'   => 'required|string|max:255',
     ]);
 
+
+    $fromTime = $request->from_time ? date('H:i:s',strtotime($request->from_time)) : null;
+    $toTime   = $request->to_time ? date('H:i:s',strtotime($request->to_time)) : null;
+
+    $validatedData['from_time'] = $fromTime;
+    $validatedData['to_time']   = $toTime;
+
+
     if ($validated) {
       $appointment->update($validated);
 
-      return response()->json(['message' => 'Appointment successfully']);
+      return response()->json(['message' => 'Appointment updated successfully']);
     }
 
     return response()->json(['errors' => 'All fields are required'], 422);
+  }
+
+  public function deleteAppointment($id)
+  {
+    $appointment = DoctorAppointment::find($id);
+
+    if (!$appointment) {
+      return response()->json(['message' => 'Doctor Appointment not found.'], 404);
+    }
+
+    $appointment->delete();
+
+    return response()->json(['message' => 'Doctor Appointment deleted successfully']);
   }
 
 }

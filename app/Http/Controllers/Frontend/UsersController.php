@@ -389,7 +389,7 @@ class UsersController extends Controller
     $validatedData = $request->validate([
       'login'                => 'required|string',
       'password'             => 'required|string|min:6',
-      'g-recaptcha-response' => 'required|captcha',
+      // 'g-recaptcha-response' => 'required|captcha',
     ]);
 
     $fieldType = filter_var($request->login, FILTER_VALIDATE_EMAIL) ? 'email' : 'mobile';
