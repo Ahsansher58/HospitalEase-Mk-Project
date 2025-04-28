@@ -74,17 +74,19 @@
                                 </div>
 
                                 @php
-                                    $doctor_profile = $doctor_profile ?? session('user_profile');
-                                    $specialization = $doctor_profile->specialization ?? 'N/A';
-                                    $years_experience = $doctor_profile->years_experience ?? 'N/A';
-                                    $ima_registration_number         = $doctor_profile->ima_registration_number ?? 'N/A';
-                                    // $weight         = $doctor_profile->weight ?? '';
-                                    // $address        = $doctor_profile->address ?? '';
-                                    // $locality       = $doctor_profile->locality ?? '';
-                                    // $city           = $doctor_profile->city ?? '';
-                                    // $state          = $doctor_profile->state ?? '';
-                                    // $pincode        = $doctor_profile->pincode ?? '';
-                                    // $country        = $doctor_profile->country ?? '';
+                                    $doctor_profile          = $doctor_profile ?? session('user_profile');
+                                    $specialization          = $doctor_profile->specialization ?? 'N/A';
+                                    $years_experience        = $doctor_profile->years_experience ?? 'N/A';
+                                    $ima_registration_number = $doctor_profile->ima_registration_number ?? 'N/A';
+                                    // $weight               = $doctor_profile->weight ?? '';
+                                    $address                 = $doctor_profile->address ?? '';
+                                    $address2                = $doctor_profile->address2 ?? '';
+                                    $clinic_name             = $doctor_profile->clinic_name ?? '';
+                                    $locality                = $doctor_profile->locality ?? '';
+                                    $city                    = $doctor_profile->city ?? '';
+                                    $state                   = $doctor_profile->state ?? '';
+                                    $pincode                 = $doctor_profile->pincode ?? '';
+                                    $country                 = $doctor_profile->country ?? '';
                                 @endphp
                                 <div class="col-lg-6">
                                     <div class="mb-3">
@@ -115,19 +117,21 @@
                                         <input type="text" class="form-control form-input-control"
                                             placeholder="{{ $weight }}" disabled>
                                     </div>
-                                </div> 
-                                <div class="col-lg-6">
-                                    <div class="mb-3">
-                                        <label class="mb-2">Address</label>
-                                        <input type="text" class="form-control form-input-control"
-                                            placeholder="{{ $address }}" disabled>
-                                    </div>
+                                </div>  --}}
+                             <div class="col-lg-6">
+                                <div class="mb-3">
+                                    <label class="mb-2">Country</label>
+                                    <select class="selectpicker form-select form-input-control w-100"
+                                        data-live-search="true" title="{{ $country }}" disabled>
+                                    </select>
                                 </div>
+                            </div>
                                 <div class="col-lg-6">
                                     <div class="mb-3">
-                                        <label class="mb-2">Locality</label>
-                                        <input type="text" class="form-control form-input-control"
-                                            placeholder="{{ $locality }}" disabled>
+                                        <label class="mb-2">State</label>
+                                        <select class="selectpicker form-select form-input-control w-100"
+                                            data-live-search="true" title="{{ $state }}" disabled>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
@@ -140,29 +144,40 @@
                                 </div> 
                                 <div class="col-lg-6">
                                     <div class="mb-3">
-                                        <label class="mb-2">State</label>
-                                        <select class="selectpicker form-select form-input-control w-100"
-                                            data-live-search="true" title="{{ $state }}" disabled>
-                                        </select>
+                                        <label class="mb-2">Locality</label>
+                                        <input type="text" class="form-control form-input-control"
+                                            placeholder="{{ $locality }}" disabled>
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
+                                    <div class="mb-3">
+                                        <label class="mb-2">Clinic Name</label>
+                                        <input type="text" class="form-control form-input-control"
+                                            placeholder="{{ $clinic_name }}" disabled>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="mb-3">
+                                        <label class="mb-2">Address 1</label>
+                                        <input type="text" class="form-control form-input-control"
+                                            placeholder="{{ $address }}" disabled>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="mb-3">
+                                        <label class="mb-2">Address 2</label>
+                                        <input type="text" class="form-control form-input-control"
+                                            placeholder="{{ $address2 }}" disabled>
+                                    </div>
+                                </div>
+                               {{--  <div class="col-lg-6">
                                     <div class="mb-3">
                                         <label class="mb-2">Pincode</label>
                                         <select class="selectpicker form-select form-input-control w-100"
                                             data-live-search="true" title="{{ $pincode }}" disabled>
                                         </select>
                                     </div>
-                                </div> 
-                             <div class="col-lg-6">
-                                    <div class="mb-3">
-                                        <label class="mb-2">Country</label>
-                                        <select class="selectpicker form-select form-input-control w-100"
-                                            data-live-search="true" title="{{ $country }}" disabled>
-                                        </select>
-                                    </div>
-                                </div> 
-                            </div> --}}
+                                </div>  --}}
 
                         </div>
                     </div>

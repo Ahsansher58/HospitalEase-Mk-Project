@@ -446,7 +446,7 @@ Route::prefix('doctor')->group(function () {
 
     // Educational
     Route::get('educational-qualifications', [DoctorSideNavbarController::class, 'educationalQualifications'])->name('doctor.educational-qualifications');
-    Route::get('doctor-educational-qualifications', [DoctorSideNavbarController::class, 'edit_educational_qualifications'])->name('doctor.editEducationalQualifications');
+    Route::get('doctor-edit-educational-qualifications', [DoctorSideNavbarController::class, 'edit_educational_qualifications'])->name('doctor.editEducationalQualifications');
     Route::put('doctor-educational-qualifications-update-all', [DoctorSideNavbarController::class, 'educational_qualifications_update_all'])->name('doctor.EducationalQualificationsUpdateAll');
 
     // Route::get('user-fav', [UserSideNavbarController::class, 'user_profile_fav'])->name('user.profileFav');

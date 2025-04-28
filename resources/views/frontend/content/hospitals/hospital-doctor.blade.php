@@ -124,6 +124,7 @@
                 <div class="modal-body mt-4">
                     <form id="doctorForm" method="POST" enctype="multipart/form-data">
                         @csrf
+                        @method('POST')
                         <div class="row g-3">
                             <div class="col-lg-3">
                                 <div class="panel upload-img-panel mb-3 w-100">
@@ -365,20 +366,20 @@
             function loadDoctorData(id) {
                 // Simulate an API response
                 const doctorData = {
-                    id: 1,
-                    name: "John Doe",
-                    experience: "Experience-1",
-                    specialisation: ["Engineering", "Plumbing"],
-                    shortIntro: "Experienced in multiple specializations.",
-                    profileImage: "/path/to/profile/image.jpg",
+                    id             : 1,
+                    name           : "John Doe",
+                    experience     : "Experience-1",
+                    specialisation : ["Engineering", "Plumbing"],
+                    shortIntro     : "Experienced in multiple specializations.",
+                    profileImage   : "/path/to/profile/image.jpg",
                 };
 
-                document.getElementById("doctorId").value = doctorData.id;
-                document.getElementById("doctorName").value = doctorData.name;
-                document.getElementById("experience").value = doctorData.experience;
+                document.getElementById("doctorId").value       = doctorData.id;
+                document.getElementById("doctorName").value     = doctorData.name;
+                document.getElementById("experience").value     = doctorData.experience;
                 document.getElementById("specialisation").value = doctorData.specialisation;
-                document.getElementById("shortIntro").value = doctorData.shortIntro;
-                document.getElementById("profileImage").src = doctorData.profileImage;
+                document.getElementById("shortIntro").value     = doctorData.shortIntro;
+                document.getElementById("profileImage").src     = doctorData.profileImage;
             }
 
             // Add or Update Doctor
@@ -386,12 +387,12 @@
                 alert(url);
                 return false;
                 $.ajax({
-                    url: url,
-                    type: 'POST',
-                    data: formData,
-                    contentType: false,
-                    processData: false,
-                    success: function(response) {
+                    url         : url,
+                    type        : 'POST',
+                    data        : formData,
+                    contentType : false,
+                    processData : false,
+                    success     : function(response) {
                         if (response.success) {
                             alert(response.message);
                             // Optionally reload the data or update the table

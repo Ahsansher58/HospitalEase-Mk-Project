@@ -180,9 +180,9 @@ class UsersController extends Controller
   public function hospital_login(Request $request)
   {
     $validatedData = $request->validate([
-      'login' => 'required|string',
-      'password' => 'required|string|min:6',
-      'g-recaptcha-response' => 'required|captcha',
+      'login'                   => 'required|string',
+      'password'                => 'required|string|min:6',
+      // 'g-recaptcha-response' => 'required|captcha',
     ]);
 
     $fieldType = filter_var($request->login, FILTER_VALIDATE_EMAIL) ? 'email' : 'mobile';
@@ -401,7 +401,7 @@ class UsersController extends Controller
       if ($user->verify == 1 && Hash::check($request->password, $user->password)) {
 
         Auth::login($user);
-        return redirect()->route('doctor.profile');
+        return redirect()->route('doctor.dashboard');
       } else {
         return back()->withErrors(['error' => 'Your account is not verified. Please wait for admin approval.']);
       }

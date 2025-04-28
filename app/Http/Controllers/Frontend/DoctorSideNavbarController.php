@@ -35,13 +35,20 @@ class DoctorSideNavbarController extends Controller
 
   public function dashboard()
   {
+    // if (!Auth::check()) {
+    //   return redirect('/');
+    // }
+    // $user = Auth::user();
+
+    // // Pass the user data to the view
+    // return view('frontend.content.doctors.doctor_profile_dashboard', compact('user'));
+
     if (!Auth::check()) {
       return redirect('/');
     }
-    $user = Auth::user();
-
-    // Pass the user data to the view
-    return view('frontend.content.doctors.doctor_profile_dashboard', compact('user'));
+    $user         = Auth::user();
+    $doctor_profile = Doctor::where('user_id', $user->id)->first();
+    return view('frontend.content.doctors.doctor_personnel', compact('user', 'doctor_profile'));
   }
 
   public function personnel_info()
@@ -160,11 +167,16 @@ class DoctorSideNavbarController extends Controller
   public function profile_update_all(Request $request)
   {
     $validated = $request->validate([
-      'name'                    => 'required|string|max:255',
-      'profile_image'           => 'nullable|string|max:255',
-      'specialization'          => 'required|string|max:255',
-      'years_experience'        => 'required|numeric',
-      'ima_registration_number' => 'required|string|max:255',
+      'name'             => 'required|string|max:255',
+      'profile_image'    => 'nullable|string|max:255',
+      'specialization'   => 'required|string|max:255',
+      'years_experience' => 'required|numeric',
+      'address'          => 'required|string|max:255',
+      'locality'         => 'required|string|max:255',
+      'city'             => 'required|string|max:255',
+      'state'            => 'required|string|max:255',
+      'pincode'          => 'required|string|max:255',
+      'country'          => 'required|string|max:255',
     ]);
 
     // Update user data
@@ -182,6 +194,12 @@ class DoctorSideNavbarController extends Controller
       'specialization'          => $request->specialization,
       'years_experience'        => $request->years_experience,
       'ima_registration_number' => $request->ima_registration_number,
+      'address'                 => $request->address ,
+      'locality'                => $request->locality ,
+      'city'                    => $request->city ,
+      'state'                   => $request->state ,
+      'pincode'                 => $request->pincode ,
+      'country'                 => $request->country ,
     ]);
 
     if ($request->hasFile('profile_image')) {

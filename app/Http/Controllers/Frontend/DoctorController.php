@@ -16,12 +16,12 @@ class DoctorController extends Controller
   public function store(Request $request)
   {
     $validator = $request->validate([
-      'name' => 'required|string|max:255',
-      'degree' => 'required|string|max:255', // Added validation for degree
-      'experience' => 'required|string|max:255',
+      'name'           => 'required|string|max:255',
+      'degree'         => 'required|string|max:255', // Added validation for degree
+      'experience'     => 'required|string|max:255',
       'specialisation' => 'required|array',
-      'profile_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-      'short_intro' => 'nullable|string|max:250',
+      'profile_image'  => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+      'short_intro'    => 'nullable|string|max:250',
     ]);
 
     try {
@@ -51,12 +51,12 @@ class DoctorController extends Controller
   public function update(Request $request, $id)
   {
     $validator = $request->validate([
-      'name' => 'required|string|max:255',
-      'degree' => 'required|string|max:255', // Added validation for degree
-      'experience' => 'required|string|max:255',
+      'name'           => 'required|string|max:255',
+      'degree'         => 'required|string|max:255', // Added validation for degree
+      'experience'     => 'required|string|max:255',
       'specialisation' => 'required|array',
-      'profile_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-      'short_intro' => 'nullable|string|max:250',
+      'profile_image'  => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+      'short_intro'    => 'nullable|string|max:250',
     ]);
 
     try {
@@ -291,7 +291,7 @@ class DoctorController extends Controller
       }
 
       // Redirect back with success message
-      return redirect()->route('doctor.appointments')->with('success', 'Appointment added successfully');
+      return redirect()->route('doctor.appointments')->with('success', 'Timing added successfully');
   }
 
 
@@ -322,7 +322,7 @@ class DoctorController extends Controller
     if ($validated) {
       $appointment->update($validated);
 
-      return response()->json(['message' => 'Appointment updated successfully']);
+      return response()->json(['message' => 'Timing updated successfully']);
     }
 
     return response()->json(['errors' => 'All fields are required'], 422);
@@ -333,12 +333,11 @@ class DoctorController extends Controller
     $appointment = DoctorAppointment::find($id);
 
     if (!$appointment) {
-      return response()->json(['message' => 'Doctor Appointment not found.'], 404);
+      return response()->json(['message' => 'Doctor Timing not found.'], 404);
+    } else{
+      $appointment->delete();
+
+      return response()->json(['message' => 'Doctor Timing deleted successfully']);
     }
-
-    $appointment->delete();
-
-    return response()->json(['message' => 'Doctor Appointment deleted successfully']);
   }
-
 }

@@ -25,6 +25,7 @@
                         <div class="hospital-list-block my-favourite-hospital frame">
                             <div class="d-flex align-items-center justify-content-between mb-5">
                                 <h3 class="font-medium mb-0">My Educational Qualifications</h3>
+                                <button class="btn btn-info me-3" type="submit">Add More</button>
                             </div>
                             @if ($errors->any())
                                 <div class="alert alert-danger">

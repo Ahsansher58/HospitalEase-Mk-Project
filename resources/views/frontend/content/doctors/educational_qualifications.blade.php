@@ -28,7 +28,7 @@
                                 <div class="text-end justify-content-between d-flex mt-4 mt-sm-0">
                                     {{-- <a href="javascript:void()" class="btn btn-cancel rounded-50 ps-0" data-bs-toggle="modal" data-bs-target="#changePassword">Change Password</a>  --}}
                                     <a href="{{ route('doctor.editEducationalQualifications') }}" class="btn btn-info rounded-50">
-                                        <img src="images/icons/edit-2.svg" alt="" class="me-0 me-md-2" /><span class="d-none d-md-inline-flex">Edit Profile</span>
+                                        <img src="images/icons/edit-2.svg" alt="" class="me-0 me-md-2" /><span class="d-none d-md-inline-flex">Edit Educational Qualifications</span>
                                     </a>
                                 </div>
                             </div>

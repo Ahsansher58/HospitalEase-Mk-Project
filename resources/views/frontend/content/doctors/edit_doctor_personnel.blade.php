@@ -117,7 +117,7 @@
                                             Please enter IMA Registration Number
                                         </div>
                                     </div>
-                                   {{--  <div class="col-lg-6">
+                                    {{-- <div class="col-lg-6">
                                         <div class="mb-3">
                                             <label for="weight" class="mb-2">Weight</label>
                                             <input type="text" class="form-control form-input-control" placeholder="76"
@@ -127,52 +127,39 @@
                                         <div class="invalid-feedback">
                                             Please enter weight
                                         </div>
-                                    </div>
+                                    </div> --}}
+
+
+
                                     <div class="col-lg-6">
-                                        <div class="mb-3">
-                                            <label for="address" class="mb-2">Address</label>
+                                        <div class="mb-4">
+                                            <label for="country" class="mb-2">Country</label>
+                                            <select class="selectpicker form-select form-input-control w-100"
+                                                name="country" required>
+                                                @foreach ($uniqueCountries as $country)
+                                                    <option value="{{ $country }}"
+                                                        {{ $doctor_profile && $doctor_profile->country == $country ? 'selected' : '' }}>
+                                                        {{ $country }}</option>
+                                                @endforeach
+                                            </select>
+                                            <div class="invalid-feedback">
+                                                Please select country
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {{-- <div class="col-lg-6">
+                                        <div class="mb-4">
+                                            <label for="pincode" class="mb-2">Pincode</label>
                                             <input type="text" class="form-control form-input-control"
-                                                placeholder="#3B, 4th cross street" name="address"
-                                                value="{{ $doctor_profile->address ?? '' }}">
+                                                placeholder="Enter pincode" name="pincode"
+                                                value="{{ $doctor_profile && $doctor_profile->pincode ?? '' }}" required>
                                         </div>
                                         <div class="invalid-feedback">
-                                            Please enter address
+                                            Please enter pincode
                                         </div>
-                                    </div>
+                                    </div> --}}
 
-                                    <div class="col-lg-6">
-                                        <div class="mb-4">
-                                            <label for="locality" class="mb-2">Locality</label>
-                                            <select class="selectpicker form-select form-input-control w-100"
-                                                name="locality" required>
-                                                @foreach ($uniqueLocalities as $locality)
-                                                    <option value="{{ $locality }}"
-                                                        {{ $doctor_profile && $doctor_profile->locality == $locality ? 'selected' : '' }}>
-                                                        {{ $locality }}</option>
-                                                @endforeach
-                                            </select>
-                                            <div class="invalid-feedback">
-                                                Please select locality
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-lg-6">
-                                        <div class="mb-4">
-                                            <label for="city" class="mb-2">City</label>
-                                            <select class="selectpicker form-select form-input-control w-100"
-                                                name="city" required>
-                                                @foreach ($uniqueCities as $city)
-                                                    <option value="{{ $city }}"
-                                                        {{ $doctor_profile && $doctor_profile->city == $city ? 'selected' : '' }}>
-                                                        {{ $city }}</option>
-                                                @endforeach
-                                            </select>
-                                            <div class="invalid-feedback">
-                                                Please select city
-                                            </div>
-                                        </div>
-                                    </div>
 
                                     <div class="col-lg-6">
                                         <div class="mb-4">
@@ -191,34 +178,78 @@
                                         </div>
                                     </div>
 
+
                                     <div class="col-lg-6">
                                         <div class="mb-4">
-                                            <label for="pincode" class="mb-2">Pincode</label>
-                                            <input type="text" class="form-control form-input-control"
-                                                placeholder="Enter pincode" name="pincode"
-                                                value="{{ $doctor_profile && $doctor_profile->pincode ?? '' }}" required>
+                                            <label for="city" class="mb-2">City</label>
+                                            <select class="selectpicker form-select form-input-control w-100"
+                                                name="city" required>
+                                                @foreach ($uniqueCities as $city)
+                                                    <option value="{{ $city }}"
+                                                        {{ $doctor_profile && $doctor_profile->city == $city ? 'selected' : '' }}>
+                                                        {{ $city }}</option>
+                                                @endforeach
+                                            </select>
+                                            <div class="invalid-feedback">
+                                                Please select city
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <div class="col-lg-6">
+                                        <div class="mb-4">
+                                            <label for="locality" class="mb-2">Locality</label>
+                                            <select class="selectpicker form-select form-input-control w-100"
+                                                name="locality" required>
+                                                @foreach ($uniqueLocalities as $locality)
+                                                    <option value="{{ $locality }}"
+                                                        {{ $doctor_profile && $doctor_profile->locality == $locality ? 'selected' : '' }}>
+                                                        {{ $locality }}</option>
+                                                @endforeach
+                                            </select>
+                                            <div class="invalid-feedback">
+                                                Please select locality
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-lg-6">
+                                        <div class="mb-3">
+                                            <label class="mb-2">Clinic Name</label>
+                                            <input type="text" class="form-control form-input-control" name="clinic_name"
+                                                value="{{ $doctor_profile->clinic_name }}" required>
                                         </div>
                                         <div class="invalid-feedback">
-                                            Please enter pincode
+                                            Please enter Clinic Name
                                         </div>
                                     </div>
 
                                     <div class="col-lg-6">
-                                        <div class="mb-4">
-                                            <label for="country" class="mb-2">Country</label>
-                                            <select class="selectpicker form-select form-input-control w-100"
-                                                name="country" required>
-                                                @foreach ($uniqueCountries as $country)
-                                                    <option value="{{ $country }}"
-                                                        {{ $doctor_profile && $doctor_profile->country == $country ? 'selected' : '' }}>
-                                                        {{ $country }}</option>
-                                                @endforeach
-                                            </select>
-                                            <div class="invalid-feedback">
-                                                Please select country
-                                            </div>
+                                        <div class="mb-3">
+                                            <label for="address" class="mb-2">Address 1</label>
+                                            <input type="text" class="form-control form-input-control"
+                                                placeholder="Address" name="address"
+                                                value="{{ $doctor_profile->address ?? '' }}">
                                         </div>
-                                    </div> --}}
+                                        <div class="invalid-feedback">
+                                            Please enter address
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6">
+                                        <div class="mb-3">
+                                            <label for="address2" class="mb-2">Address 2</label>
+                                            <input type="text" class="form-control form-input-control"
+                                                placeholder="Address 2" name="address2"
+                                                value="{{ $doctor_profile->address2 ?? '' }}">
+                                        </div>
+                                        <div class="invalid-feedback">
+                                            Please enter address 2
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="mt-3 mt-md-5 mb-3">

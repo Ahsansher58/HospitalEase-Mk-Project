@@ -19,7 +19,7 @@
     <a class="nav-link {{ Request::is('doctor/appointments') ? 'active' : '' }} {{ $check_disabled }}"
         href="{{ route('doctor.appointments') }}">
         <img src="{{ asset('assets/frontend/images/icons/report-medical.svg') }}" class="img-fluid me-2"
-            alt="" />Appointments
+            alt="" />Timings
     </a>
     <a class="nav-link {{ Request::is('doctor/social-media') ? 'active' : '' }} {{ $check_disabled }}"
         href="{{ route('doctor.social-media') }}">

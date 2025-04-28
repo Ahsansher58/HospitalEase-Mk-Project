@@ -1,6 +1,6 @@
 @extends('frontend.layouts.after-login-doctors')
 
-@section('title', 'Hospital Ease - Appointments')
+@section('title', 'Hospital Ease - Timings')
 @include('frontend.includes.favicon')
 @section('content')
     @include('frontend.includes.after-login-doctor-header')
@@ -22,7 +22,7 @@
 
                     <div class="col-xl-9">
                         <div class="hospital-list-block my-favourite-hospital frame">
-                            <h3 class="font-medium">Appointments</h3>
+                            <h3 class="font-medium">Timings</h3>
                             <form autocomplete="off">
                                 <div class="row mb-4 g-2 align-items-center">
                                     <div class="col-md-4">
@@ -107,7 +107,7 @@
         <div class="modal-dialog modal-m modal-dialog-centered">
             <div class="modal-content rounded-24">
                 <div class="modal-header border-0">
-                    <h3 class="modal-title font-regular" id="staticBackdropLabel">Appointments</h3>
+                    <h3 class="modal-title font-regular" id="staticBackdropLabel">Timings</h3>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body mt-4">
@@ -154,7 +154,7 @@
         <div class="modal-dialog modal-m modal-dialog-centered">
             <div class="modal-content rounded-24">
                 <div class="modal-header border-0">
-                    <h3 class="modal-title font-regular" id="staticBackdropLabel">Edit Appointments</h3>
+                    <h3 class="modal-title font-regular" id="staticBackdropLabel">Edit Timings</h3>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body mt-4">
