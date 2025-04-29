@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Doctor;
 use App\Models\DoctorSocialMedia;
 use App\Models\DoctorAppointment;
+use App\Models\DoctorAwardAchievement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
@@ -292,6 +293,46 @@ class DoctorController extends Controller
 
       // Redirect back with success message
       return redirect()->route('doctor.appointments')->with('success', 'Timing added successfully');
+  }
+
+   public function AwardAchievementsStore(Request $request)
+  {
+      // Validate the fields
+      $validatedData = $request->validate([
+        'award_name'        => 'required|string|max:255',
+        'awarded_year'      => 'required|numeric',
+        'award_certificate' => 'required',
+      ]);
+
+      $imageName = null;
+
+      if ($request->hasFile('award_certificate')) {
+        // foreach ($request->award_certificate as $key => $image) {
+            $image = $request->file('award_certificate');
+            $imageName = time() . '.' . $image->getClientOriginalExtension(); 
+
+            if (!file_exists(public_path('uploads/doctors'))) {
+                mkdir(public_path('uploads/doctors'), 0777, true);
+            }
+
+            $image->move(public_path('uploads/doctors'), $imageName); 
+        // }
+      }
+
+    // Update user profile
+    $user          = Auth::user();
+    $doctor        = Doctor::where('user_id', $user->id)->first();
+    $doctorProfile = DoctorAwardAchievement::where('doctor_id',$doctor->id)->first();
+
+      DoctorAwardAchievement::create([
+        'doctor_id'         => $doctor->id,
+        'award_name'        => $request->award_name,
+        'awarded_year'      => $request->awarded_year,
+        'award_certificate' => $imageName,
+      ]);
+
+      // Redirect back with success message
+      return redirect()->route('doctor.award-achievements')->with('success', 'Award & Achievements added successfully');
   }
 
 

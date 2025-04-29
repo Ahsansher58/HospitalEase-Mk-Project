@@ -449,6 +449,12 @@ Route::prefix('doctor')->group(function () {
     Route::get('doctor-edit-educational-qualifications', [DoctorSideNavbarController::class, 'edit_educational_qualifications'])->name('doctor.editEducationalQualifications');
     Route::put('doctor-educational-qualifications-update-all', [DoctorSideNavbarController::class, 'educational_qualifications_update_all'])->name('doctor.EducationalQualificationsUpdateAll');
 
+    // Award & Achievements
+    Route::get('award-achievements', [DoctorSideNavbarController::class, 'awardAchievements'])->name('doctor.award-achievements');
+    Route::post('award-achievements-store', [DoctorController::class, 'AwardAchievementsStore'])->name('doctor.AwardAchievementsStore');
+    Route::get('doctor-edit-award-achievements', [DoctorSideNavbarController::class, 'edit_award_achievements'])->name('doctor.editAwardAchievements');
+    Route::post('doctor-award-achievements-update-all', [DoctorSideNavbarController::class, 'award_achievements_update_all'])->name('doctor.AwardAchievementsUpdateAll');
+
     // Route::get('user-fav', [UserSideNavbarController::class, 'user_profile_fav'])->name('user.profileFav');
 
     // Change Password

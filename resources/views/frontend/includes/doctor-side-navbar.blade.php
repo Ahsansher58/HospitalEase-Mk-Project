@@ -16,6 +16,11 @@
         <img src="{{ asset('assets/frontend/images/icons/building-hospital.svg') }}" class="img-fluid me-2"
             alt="" />Educational Qualifications
     </a>
+    <a class="nav-link {{ Request::is('doctor/award-achievements') ? 'active' : '' }} {{ $check_disabled }}"
+        href="{{ route('doctor.award-achievements') }}">
+        <img src="{{ asset('assets/frontend/images/icons/building-hospital.svg') }}" class="img-fluid me-2"
+            alt="" />Award Achievements
+    </a>
     <a class="nav-link {{ Request::is('doctor/appointments') ? 'active' : '' }} {{ $check_disabled }}"
         href="{{ route('doctor.appointments') }}">
         <img src="{{ asset('assets/frontend/images/icons/report-medical.svg') }}" class="img-fluid me-2"

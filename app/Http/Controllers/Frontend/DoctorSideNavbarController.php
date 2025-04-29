@@ -10,6 +10,7 @@ use App\Models\SubCategory;
 use App\Models\LocationsMaster;
 // use App\Models\UserProfile as ModelsUserProfile;
 use App\Models\Doctor;
+use App\Models\DoctorAwardAchievement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
@@ -71,6 +72,17 @@ class DoctorSideNavbarController extends Controller
     return view('frontend.content.doctors.educational_qualifications', compact('user', 'doctor_profile'));
   }
 
+  public function awardAchievements()
+  {
+    if (!Auth::check()) {
+      return redirect('/');
+    }
+    $user           = Auth::user();
+    $doctor         = Doctor::where('user_id', $user->id)->first();
+    $doctor_profile = DoctorAwardAchievement::where('doctor_id', $doctor->id)->get();
+    return view('frontend.content.doctors.award-achievements', compact('user', 'doctor_profile'));
+  }
+
   public function edit_personnel_info()
   {
     if (!Auth::check()) {
@@ -105,6 +117,24 @@ class DoctorSideNavbarController extends Controller
     $uniqueStates          = LocationsMaster::select('state')->distinct()->pluck('state');
     $uniqueCountries       = LocationsMaster::select('country')->distinct()->pluck('country');
     return view('frontend.content.doctors.edit_educational_qualifications', compact('user', 'uniqueLocalities', 'uniqueCities', 'uniqueStates', 'uniqueCountries', 'businessCategories', 'businessSubCategories', 'locationMaster', 'doctor_profile'));
+  }
+
+  public function edit_award_achievements()
+  {
+    if (!Auth::check()) {
+      return redirect('/');
+    }
+    $user                  = Auth::user();
+    $doctor_profile        = Doctor::where('user_id', $user->id)->first();
+    $categories            = BusinessCategory::orderBy('order_no')->get();
+    $businessCategories    = $categories->where('is_sub_category', false);
+    $businessSubCategories = $categories->where('is_sub_category', true);
+    $locationMaster        = LocationsMaster::all();
+    $uniqueLocalities      = LocationsMaster::select('locality')->distinct()->pluck('locality');
+    $uniqueCities          = LocationsMaster::select('city')->distinct()->pluck('city');
+    $uniqueStates          = LocationsMaster::select('state')->distinct()->pluck('state');
+    $uniqueCountries       = LocationsMaster::select('country')->distinct()->pluck('country');
+    return view('frontend.content.doctors.edit_award_achievements', compact('user', 'uniqueLocalities', 'uniqueCities', 'uniqueStates', 'uniqueCountries', 'businessCategories', 'businessSubCategories', 'locationMaster', 'doctor_profile'));
   }
 
   public function user_profile_fav()
@@ -252,6 +282,54 @@ class DoctorSideNavbarController extends Controller
     ]);
 
     // Redirect back with success message
-    return redirect()->route('doctor.educational-qualifications')->with('success', 'Profile updated');
+    return redirect()->route('doctor.educational-qualifications')->with('success', 'Educational Qualifications updated');
+  }
+
+  public function award_achievements_update_all(Request $request)
+  {
+    $validated = $request->validate([
+      'award_name'        => 'required|string|max:255',
+      'awarded_year'      => 'required|numeric',
+      'award_certificate' => 'required',
+    ]);
+
+    $imageName = null;
+
+      if ($request->hasFile('award_certificate')) {
+        // foreach ($request->award_certificate as $key => $image) {
+            $image = $request->file('award_certificate');
+            $imageName = time() . '.' . $image->getClientOriginalExtension(); 
+
+            if (!file_exists(public_path('uploads/doctors'))) {
+                mkdir(public_path('uploads/doctors'), 0777, true);
+            }
+
+            $image->move(public_path('uploads/doctors'), $imageName); 
+        // }
+      }
+
+    // Update user profile
+    $user        = Auth::user();
+    $doctor      = Doctor::where('user_id', $user->id)->first();
+    $doctorProfile = DoctorAwardAchievement::where('doctor_id',$doctor->id)->first();
+
+    if (!$doctorProfile) {
+        DoctorAwardAchievement::create([
+          'doctor_id'         => $doctor->id,
+          'award_name'        => $request->award_name,
+          'awarded_year'      => $request->awarded_year,
+          'award_certificate' => $imageName,
+        ]);
+    } else{
+      $doctorProfile->update([
+        'doctor_id'         => $doctor->id,
+        'award_name'        => $request->award_name,
+        'awarded_year'      => $request->awarded_year,
+        'award_certificate' => $imageName,
+      ]);
+    }
+
+    // Redirect back with success message
+    return redirect()->route('doctor.award-achievements')->with('success', 'Award & Achievements updated');
   }
 }

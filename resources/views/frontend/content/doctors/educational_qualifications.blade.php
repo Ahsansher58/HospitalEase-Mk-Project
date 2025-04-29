@@ -1,7 +1,7 @@
 <!--MAIN-->
 @extends('frontend.layouts.after-login-doctors')
 
-@section('title', 'Hospital Ease - Dashboard')
+@section('title', 'Hospital Ease - Educational Qualifications')
 @include('frontend.includes.favicon')
 @section('content')
     @include('frontend.includes.after-login-doctor-header')
