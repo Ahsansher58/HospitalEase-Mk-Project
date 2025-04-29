@@ -219,7 +219,7 @@
                                     <div class="col-lg-6">
                                         <div class="mb-3">
                                             <label class="mb-2">Clinic Name</label>
-                                            <input type="text" class="form-control form-input-control" name="clinic_name"
+                                            <input type="text" class="form-control form-input-control" name="clinic_name" placeholder="Clinic Name"
                                                 value="{{ $doctor_profile->clinic_name }}" required>
                                         </div>
                                         <div class="invalid-feedback">
@@ -229,9 +229,9 @@
 
                                     <div class="col-lg-6">
                                         <div class="mb-3">
-                                            <label for="address" class="mb-2">Address 1</label>
+                                            <label for="clinic_address1" class="mb-2">Clinic Address 1</label>
                                             <input type="text" class="form-control form-input-control"
-                                                placeholder="Address" name="address"
+                                                placeholder="Address 1" name="clinic_address1"
                                                 value="{{ $doctor_profile->address ?? '' }}">
                                         </div>
                                         <div class="invalid-feedback">
@@ -241,13 +241,24 @@
 
                                     <div class="col-lg-6">
                                         <div class="mb-3">
-                                            <label for="address2" class="mb-2">Address 2</label>
+                                            <label for="clinic_address2" class="mb-2">Clinic Address 2</label>
                                             <input type="text" class="form-control form-input-control"
-                                                placeholder="Address 2" name="address2"
+                                                placeholder="Address 2" name="clinic_address2"
                                                 value="{{ $doctor_profile->address2 ?? '' }}">
                                         </div>
                                         <div class="invalid-feedback">
                                             Please enter address 2
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="mb-3">
+                                            <label for="clinic_phone" class="mb-2">Clinic Phone</label>
+                                            <input type="text" class="form-control form-input-control"
+                                                placeholder="Clinic Phone" name="clinic_phone"
+                                                value="{{ $doctor_profile->address2 ?? '' }}">
+                                        </div>
+                                        <div class="invalid-feedback">
+                                            Please enter Phone 
                                         </div>
                                     </div>
                                 </div>

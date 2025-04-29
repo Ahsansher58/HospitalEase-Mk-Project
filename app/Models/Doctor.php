@@ -35,5 +35,9 @@ class Doctor extends Model
     'state',
     'pincode',
     'country',
+    'clinic_name',
+    'clinic_address1',
+    'clinic_address2',
+    'clinic_phone',
   ];
 }

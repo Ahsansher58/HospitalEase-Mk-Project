@@ -79,14 +79,15 @@
                                     $years_experience        = $doctor_profile->years_experience ?? 'N/A';
                                     $ima_registration_number = $doctor_profile->ima_registration_number ?? 'N/A';
                                     // $weight               = $doctor_profile->weight ?? '';
-                                    $address                 = $doctor_profile->address ?? '';
-                                    $address2                = $doctor_profile->address2 ?? '';
+                                    $clinic_address1                 = $doctor_profile->clinic_address1 ?? '';
+                                    $clinic_address2                = $doctor_profile->clinic_address2 ?? '';
                                     $clinic_name             = $doctor_profile->clinic_name ?? '';
                                     $locality                = $doctor_profile->locality ?? '';
                                     $city                    = $doctor_profile->city ?? '';
                                     $state                   = $doctor_profile->state ?? '';
                                     $pincode                 = $doctor_profile->pincode ?? '';
                                     $country                 = $doctor_profile->country ?? '';
+                                    $clinic_phone                 = $doctor_profile->clinic_phone ?? '';
                                 @endphp
                                 <div class="col-lg-6">
                                     <div class="mb-3">
@@ -158,16 +159,23 @@
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="mb-3">
-                                        <label class="mb-2">Address 1</label>
+                                        <label class="mb-2">Clinic Address 1</label>
                                         <input type="text" class="form-control form-input-control"
-                                            placeholder="{{ $address }}" disabled>
+                                            placeholder="{{ $clinic_address1 }}" disabled>
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="mb-3">
-                                        <label class="mb-2">Address 2</label>
+                                        <label class="mb-2">Clinic Address 2</label>
                                         <input type="text" class="form-control form-input-control"
-                                            placeholder="{{ $address2 }}" disabled>
+                                            placeholder="{{ $clinic_address2 }}" disabled>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="mb-3">
+                                        <label class="mb-2">Clinic Phone</label>
+                                        <input type="text" class="form-control form-input-control"
+                                            placeholder="{{ $clinic_phone }}" disabled>
                                     </div>
                                 </div>
                                {{--  <div class="col-lg-6">

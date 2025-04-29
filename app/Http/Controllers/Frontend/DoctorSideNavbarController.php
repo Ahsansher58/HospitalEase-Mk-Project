@@ -167,16 +167,19 @@ class DoctorSideNavbarController extends Controller
   public function profile_update_all(Request $request)
   {
     $validated = $request->validate([
-      'name'             => 'required|string|max:255',
-      'profile_image'    => 'nullable|string|max:255',
-      'specialization'   => 'required|string|max:255',
-      'years_experience' => 'required|numeric',
-      'address'          => 'required|string|max:255',
-      'locality'         => 'required|string|max:255',
-      'city'             => 'required|string|max:255',
-      'state'            => 'required|string|max:255',
-      'pincode'          => 'required|string|max:255',
-      'country'          => 'required|string|max:255',
+      'name'                    => 'required|string|max:255',
+      'profile_image'           => 'nullable|string|max:255',
+      'specialization'          => 'required|string|max:255',
+      'years_experience'        => 'required|numeric',
+      'ima_registration_number' => 'required',
+      'country'                 => 'nullable|string|max:255',
+      'state'                   => 'nullable|string|max:255',
+      'city'                    => 'nullable|string|max:255',
+      'locality'                => 'nullable|string|max:255',
+      'clinic_name'             => 'nullable|string|max:255',
+      'clinic_address1'         => 'nullable|string|max:255',
+      'clinic_address2'         => 'nullable|string|max:255',
+      'clinic_phone'            => 'nullable|string|max:255',
     ]);
 
     // Update user data
@@ -194,12 +197,14 @@ class DoctorSideNavbarController extends Controller
       'specialization'          => $request->specialization,
       'years_experience'        => $request->years_experience,
       'ima_registration_number' => $request->ima_registration_number,
-      'address'                 => $request->address ,
-      'locality'                => $request->locality ,
-      'city'                    => $request->city ,
-      'state'                   => $request->state ,
-      'pincode'                 => $request->pincode ,
       'country'                 => $request->country ,
+      'state'                   => $request->state ,
+      'city'                    => $request->city ,
+      'locality'                => $request->locality ,
+      'clinic_name'             => $request->clinic_name ,
+      'clinic_address1'         => $request->clinic_address1 ,
+      'clinic_address2'         => $request->clinic_address2 ,
+      'clinic_phone'            => $request->clinic_phone ,
     ]);
 
     if ($request->hasFile('profile_image')) {
