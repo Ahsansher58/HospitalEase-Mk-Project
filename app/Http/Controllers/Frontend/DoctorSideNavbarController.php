@@ -11,6 +11,7 @@ use App\Models\LocationsMaster;
 // use App\Models\UserProfile as ModelsUserProfile;
 use App\Models\Doctor;
 use App\Models\DoctorAwardAchievement;
+use App\Models\DoctorEducationalQualification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
@@ -67,9 +68,11 @@ class DoctorSideNavbarController extends Controller
     if (!Auth::check()) {
       return redirect('/');
     }
-    $user         = Auth::user();
-    $doctor_profile = Doctor::where('user_id', $user->id)->first();
-    return view('frontend.content.doctors.educational_qualifications', compact('user', 'doctor_profile'));
+    $user                           = Auth::user();
+    $doctor                         = Doctor::where('user_id', $user->id)->first();
+        
+    $doctorEducationalQualification = DoctorEducationalQualification::where('doctor_id', $doctor->id)->get();
+    return view('frontend.content.doctors.educational_qualifications', compact('user', 'doctorEducationalQualification'));
   }
 
   public function awardAchievements()
@@ -101,13 +104,13 @@ class DoctorSideNavbarController extends Controller
     return view('frontend.content.doctors.edit_doctor_personnel', compact('user', 'uniqueLocalities', 'uniqueCities', 'uniqueStates', 'uniqueCountries', 'businessCategories', 'businessSubCategories', 'locationMaster', 'doctor_profile'));
   }
   
-  public function edit_educational_qualifications()
+  public function edit_educational_qualifications($id)
   {
     if (!Auth::check()) {
       return redirect('/');
     }
     $user                  = Auth::user();
-    $doctor_profile        = Doctor::where('user_id', $user->id)->first();
+    $doctor_profile        = DoctorEducationalQualification::find($id);
     $categories            = BusinessCategory::orderBy('order_no')->get();
     $businessCategories    = $categories->where('is_sub_category', false);
     $businessSubCategories = $categories->where('is_sub_category', true);
@@ -266,24 +269,71 @@ class DoctorSideNavbarController extends Controller
       return redirect()->route('doctor.personnelInfo')->with('success', 'Profile updated successfully!');
   }
 
-  public function educational_qualifications_update_all(Request $request)
+  public function educational_qualifications_update_all(Request $request,$id)
   {
     $validated = $request->validate([
-      'college_name' => 'required|string|max:255',
-      'year_studied' => 'required|numeric',
-      'degree'       => 'required|string|max:255',
+      'college_name'               => 'required|string|max:255',
+      'year_studied'               => 'required|numeric',
+      'degree'                     => 'required|string|max:255',
+      'qualification_certificate'  => 'nullable|string|max:255',
+      'show_certificate_in_public' => 'nullable',
     ]);
 
-    // Update user profile
-    $userProfile = Doctor::where('user_id', auth()->id())->first();
-    $userProfile->update([
-      'college_name' => $request->college_name,
-      'year_studied' => $request->year_studied,
-      'degree'       => $request->degree,
+    $user                           = Auth::user();
+    $doctor                         = Doctor::where('user_id', $user->id)->first();
+    $doctorEducationalQualification = DoctorEducationalQualification::find($id);
+
+    $doctorEducationalQualification->update([
+      'doctor_id'                  => $doctor->id,
+      'college_name'               => $request->college_name,
+      'year_studied'               => $request->year_studied,
+      'degree'                     => $request->degree,
+      'qualification_certificate'  => $request->qualification_certificate,
+      'show_certificate_in_public' => $request->show_certificate_in_public,
     ]);
 
     // Redirect back with success message
     return redirect()->route('doctor.educational-qualifications')->with('success', 'Educational Qualifications updated');
+  }
+
+  public function educational_qualifications_store(Request $request)
+  {
+    $validated = $request->validate([
+      'college_name'               => 'required|string|max:255',
+      'year_studied'               => 'required|numeric',
+      'degree'                     => 'required|string|max:255',
+      'qualification_certificate'  => 'nullable|string|max:255',
+      'show_certificate_in_public' => 'nullable',
+    ]);
+
+    $user   = Auth::user();
+    $doctor = Doctor::where('user_id', $user->id)->first();
+
+
+    $imageName = null;
+
+      if ($request->hasFile('qualification_certificate')) {
+          $image     = $request->file('qualification_certificate');
+          $imageName = time() . '.' . $image->getClientOriginalExtension(); 
+
+          if (!file_exists(public_path('uploads/doctors'))) {
+              mkdir(public_path('uploads/doctors'), 0777, true);
+          }
+
+          $image->move(public_path('uploads/doctors'), $imageName); 
+      }
+
+    DoctorEducationalQualification::create([
+      'doctor_id'                  => $doctor->id,
+      'college_name'               => $request->college_name,
+      'year_studied'               => $request->year_studied,
+      'degree'                     => $request->degree,
+      'qualification_certificate'  => $imageName,
+      'show_certificate_in_public' => $request->show_certificate_in_public,
+    ]);
+
+    // Redirect back with success message
+    return redirect()->route('doctor.educational-qualifications')->with('success', 'Educational Qualifications created');
   }
 
   public function award_achievements_update_all(Request $request)

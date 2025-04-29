@@ -7,6 +7,7 @@ use App\Models\Doctor;
 use App\Models\DoctorSocialMedia;
 use App\Models\DoctorAppointment;
 use App\Models\DoctorAwardAchievement;
+use App\Models\DoctorEducationalQualification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
@@ -221,6 +222,25 @@ class DoctorController extends Controller
     return response()->json([
       'success' => true,
       'message' => 'Award Achievement deleted successfully'
+    ]);
+  }
+
+  public function deleteEducationalQualification($id)
+  {
+    $educationalQualification = DoctorEducationalQualification::find($id);
+
+    if (!$educationalQualification) {
+      return response()->json([
+        'success' => false,
+        'message' => 'Educational Qualification not found.']
+      , 404);
+    }
+
+    $educationalQualification->delete();
+
+    return response()->json([
+      'success' => true,
+      'message' => 'Educational Qualification deleted successfully'
     ]);
   }
 

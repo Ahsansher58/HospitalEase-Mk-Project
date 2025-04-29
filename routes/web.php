@@ -446,8 +446,10 @@ Route::prefix('doctor')->group(function () {
 
     // Educational
     Route::get('educational-qualifications', [DoctorSideNavbarController::class, 'educationalQualifications'])->name('doctor.educational-qualifications');
-    Route::get('doctor-edit-educational-qualifications', [DoctorSideNavbarController::class, 'edit_educational_qualifications'])->name('doctor.editEducationalQualifications');
+    Route::get('doctor-edit-educational-qualifications/{id}', [DoctorSideNavbarController::class, 'edit_educational_qualifications'])->name('doctor.editEducationalQualifications');
+    Route::post('doctor-educational-qualifications-store', [DoctorSideNavbarController::class, 'educational_qualifications_store'])->name('doctor.EducationalQualificationsStore');
     Route::put('doctor-educational-qualifications-update-all', [DoctorSideNavbarController::class, 'educational_qualifications_update_all'])->name('doctor.EducationalQualificationsUpdateAll');
+    Route::delete('/doctor-educational-qualifications/{id}', [DoctorController::class, 'deleteEducationalQualification'])->name('doctor-educational-qualifications.delete');
 
     // Award & Achievements
     Route::get('award-achievements', [DoctorSideNavbarController::class, 'awardAchievements'])->name('doctor.award-achievements');
