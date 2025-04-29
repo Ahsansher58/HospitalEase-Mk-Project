@@ -51,12 +51,12 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-2"><a href="javascript:void()"
-                                            class="btn btn-info btn-md rounded-50 w-100" data-bs-toggle="modal"
-                                            data-bs-target="#appointments_modal"><img
-                                                src="{{ asset('assets/frontend/images/icons/plus-icon.svg') }}"
-                                                class="img-fluid me-0 me-sm-2" /><span
-                                                class="d-none d-sm-inline-flex">Add</span></a></div>
+                                    <div class="col-md-2">
+                                        <a href="javascript:void()" class="btn btn-info btn-md rounded-50 w-100" data-bs-toggle="modal" data-bs-target="#appointments_modal">
+                                            <img src="{{ asset('assets/frontend/images/icons/plus-icon.svg') }}" class="img-fluid me-0 me-sm-2" />
+                                            <span class="d-none d-sm-inline-flex">Add</span>
+                                        </a>
+                                    </div>
                                 </div>
                             </form>
                             <div id='show_messages'>
@@ -192,7 +192,17 @@
                             <!-- Choose Hospital -->
                             <div class="col-md-6 mt-2 mb-2">
                                 <label class="form-label" for="formValidationPlacement">Hospital</label>
-                                <input type="text" class="form-control form-input-control" name="to_time" placeholder="Search Hospital" required>
+                                <input type="text" class="form-control form-input-control search_hospital" name="search_hospital" placeholder="Search Hospital" required>
+                                <div class="position-relative">
+                                    <input type="text" class="form-control form-input-control search_hospital" name="search_hospital" placeholder="Search Hospital" required style="display  :none !important;">
+                                    <div class="hospital-dropdown dropdown-menu w-100" style="
+                                        display  :none !important;
+                                        position : absolute;
+                                        top      : 100%;
+                                        ">   
+                                    </div>
+                                </div>
+
                             </div>
 
                             <div class="col-lg-12">
@@ -263,6 +273,45 @@
     </div>
 
     <script>
+        $(document).ready(function(){
+            $('.search_hospital').on('keyup', function(){
+                let country  = $('select[name="country"]').val();
+                let state    = $('select[name="state"]').val();
+                let city     = $('select[name="city"]').val();
+                let locality = $('select[name="locality"]').val();
+                let search   = $('input[name="search_hospital"]').val();
+
+                let url = `/search-hospitals?country=${country}&state=${state}&city=${city}&locality=${locality}&search=${search}`;
+
+                if (search.length >= 2) {
+                    $.ajax({
+                        url: url,
+                        type: 'GET',
+                        success: function(response) {
+                            // Assuming response is an array of hospital names
+                            let dropdown = $('.hospital-dropdown');
+                            dropdown.empty(); // Clear old results
+
+                            if(response.length > 0){
+                                response.forEach(function(item){
+                                    dropdown.append(`<div class="dropdown-item hospital-option">${item.name}</div>`);
+                                });
+                                dropdown.show();
+                            } else {
+                                dropdown.hide();
+                            }
+                        }
+                    });
+                }
+            });
+
+            // Optional: fill input on click
+            $(document).on('click', '.hospital-option', function(){
+                $('.search_hospital').val($(this).text());
+                $('.hospital-dropdown').hide();
+            });
+        });
+
         var table = $('#Appointment').DataTable({
             ajax: {
                 url: '{{ route('doctor.getAppointments') }}',

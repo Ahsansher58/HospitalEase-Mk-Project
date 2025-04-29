@@ -263,7 +263,7 @@ class DoctorController extends Controller
   }
 
 
-  public function appointments()
+  public function appointments(Request $request)
   {
     if (!Auth::check()) {
       return redirect('/');
@@ -277,6 +277,29 @@ class DoctorController extends Controller
     $uniqueCities          = LocationsMaster::select('city')->distinct()->pluck('city');
     $uniqueStates          = LocationsMaster::select('state')->distinct()->pluck('state');
     $uniqueCountries       = LocationsMaster::select('country')->distinct()->pluck('country');
+
+    if ($request->ajax()) {
+      $country  = $request->country;
+      $state    = $request->state;
+      $city     = $request->city;
+      $locality = $request->locality;
+      $search   = $request->search;
+
+      $data = HospitalsProfile::where('country' , $country)
+      ->select('hospitals_profile.*')
+      ->where('state' , $state)
+      ->where('city' , $city)
+      ->where('locality' , $locality)
+      ->where('hospitals_profile.hospital_name', 'like', '%'. $search .'%')
+      ->get();
+
+      echo "<pre>";
+      print_r($data);
+      echo "</pre>";
+      die();
+          
+    } 
+    
     return view('frontend.content.doctors.appointments', compact(
       'user',
       'categories',
