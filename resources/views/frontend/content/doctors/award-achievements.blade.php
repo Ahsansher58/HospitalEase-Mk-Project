@@ -3,6 +3,11 @@
 
 @section('title', 'Hospital Ease - Award & Achievements')
 @include('frontend.includes.favicon')
+<!-- Page Scripts -->
+{{-- @section('page-script') --}}
+    @vite(['resources/assets/js/forms-selects.js', 'resources/assets/js/extended-ui-sweetalert2.js'])
+    @include('content.scripts.script-users');
+{{-- @endsection --}}
 @section('content')
     @include('frontend.includes.after-login-doctor-header')
     <!--MAIN-->
@@ -26,11 +31,13 @@
                             <div class="d-sm-flex align-items-start align-items-sm-center justify-content-between mb-5">
                                 <h3 class="font-medium mb-0">Award & Achievements</h3>
                                 <div class="text-end justify-content-between d-flex mt-4 mt-sm-0">
-                                    <a href="{{ route('doctor.editAwardAchievements') }}" class="btn btn-info rounded-50 text-center">
-                                        <img src="images/icons/edit-2.svg" alt="" class="me-0 me-md-2" /><span class="d-none d-md-inline-flex">Edit</span>
-                                    </a>
+                                    {{-- @if(count($doctorAchievement) > 0)
+                                        <a href="{{ route('doctor.editAwardAchievements') }}" class="btn btn-info rounded-50 text-center">
+                                            <img src="images/icons/edit-2.svg" alt="" class="me-0 me-md-2" /><span class="d-none d-md-inline-flex">Edit</span>
+                                        </a>
+                                    @endif --}}
                                     <a href="javascript:void()"
-                                    class="btn btn-info btn-md rounded-50 w-100" data-bs-toggle="modal"
+                                    class="btn btn-info btn-md rounded-50 w-100 mx-2" data-bs-toggle="modal"
                                     data-bs-target="#award_achievements_modal"><img
                                         src="{{ asset('assets/frontend/images/icons/plus-icon.svg') }}"
                                         class="img-fluid me-0 me-sm-2" /><span
@@ -53,33 +60,56 @@
                                         </ul>
                                     </div>
                                 @endif
-                                @foreach($doctor_profile as $list )
-                                    <div class="col-lg-4">
-                                        <div class="mb-3">
-                                            <label class="mb-2">Award Name</label>
-                                            <input type="text" class="form-control form-input-control"
-                                                placeholder="{{ $list->award_name ?? 'N/A' }}" disabled>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <div class="mb-3">
-                                            <label class="mb-2">Awarded Year</label>
-                                            <input type="number" class="form-control form-input-control"
-                                                placeholder="{{ $list->awarded_year ?? 'N/A' }}" disabled>
-                                        </div>
-                                    </div>
-                                    @if(!empty($list->award_certificate) && file_exists(public_path('uploads/doctors/' . $list->award_certificate)))
-                                        @php
-                                            $imageUrl  = asset('uploads/doctors/' . $list->award_certificate);
-                                        @endphp
-                                            <div class="col-lg-4 text-center">
-                                                <label class="mb-2">Award Certificate</label>
+                                @if(count($doctorAchievement) > 0)
+                                    @foreach($doctorAchievement as $list )
+                                        <div class="row">
+                                            <div class="col-lg-3">
                                                 <div class="mb-3">
-                                                    <img src="{{ $imageUrl }}" alt="Award Certificate" style="max-width: 40%; height: 40%;">
+                                                    <label class="mb-2">Award Name</label>
+                                                    <input type="text" class="form-control form-input-control"
+                                                        placeholder="{{ $list->award_name ?? 'N/A' }}" disabled>
                                                 </div>
                                             </div>
-                                    @endif
-                                @endforeach
+                                            <div class="col-lg-3">
+                                                <div class="mb-3">
+                                                    <label class="mb-2">Awarded Year</label>
+                                                    <input type="number" class="form-control form-input-control"
+                                                        placeholder="{{ $list->awarded_year ?? 'N/A' }}" disabled>
+                                                </div>
+                                            </div>
+                                            @if(!empty($list->award_certificate) && file_exists(public_path('uploads/doctors/' . $list->award_certificate)))
+                                                @php
+                                                    $imageUrl  = asset('uploads/doctors/' . $list->award_certificate);
+                                                @endphp
+                                                <div class="col-lg-3 text-center">
+                                                    <label class="mb-2">Award Certificate</label>
+                                                    <div class="mb-3">
+                                                        <img src="{{ $imageUrl }}" alt="Award Certificate" style="max-width: 40%; height: 40%;">
+                                                    </div>
+                                                </div>
+                                            @endif
+                                            <div class="col-lg-3 d-flex align-items-center">
+                                                <div class="mb-3">
+                                                    <a href="{{ route('doctor.editAwardAchievements' ,$list->id ) }}" class="btn btn-info text-center btn-sm">
+                                                        <img src="images/icons/edit-2.svg" alt="" class="me-0 me-md-2" /><span class="d-none d-md-inline-flex">Edit</span>
+                                                    </a>
+                                                    <a href='javascript:void()'
+                                                    class='btn btn-danger text-center btn-sm'
+                                                    onclick='delete_award({{$list->id}})'>
+                                                    <i class='menu-icon tf-icons ti ti-trash'></i> Remove
+                                                </a>
+                                            </div>
+                                        </div>
+                                        
+                                    @endforeach
+                                @else
+                                    <div class="row">
+                                        <div class="col-lg-12 text-center">
+                                            <h6 class="text-center">No Data Found</h6>        
+                                        </div>      
+                                    </div>
+                                @endif
+
                         </div>
                     </div>
                 </div>

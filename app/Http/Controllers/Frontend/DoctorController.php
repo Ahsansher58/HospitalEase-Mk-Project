@@ -205,6 +205,25 @@ class DoctorController extends Controller
     return response()->json(['message' => 'Social Media deleted successfully']);
   }
 
+  public function deleteAwardAchievement($id)
+  {
+    $awardAchievement = DoctorAwardAchievement::find($id);
+
+    if (!$awardAchievement) {
+      return response()->json([
+        'success' => false,
+        'message' => 'Award Achievement not found.']
+      , 404);
+    }
+
+    $awardAchievement->delete();
+
+    return response()->json([
+      'success' => true,
+      'message' => 'Award Achievement deleted successfully'
+    ]);
+  }
+
   public function doctor_logout(Request $request)
   {
     Auth::logout();

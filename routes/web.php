@@ -452,8 +452,9 @@ Route::prefix('doctor')->group(function () {
     // Award & Achievements
     Route::get('award-achievements', [DoctorSideNavbarController::class, 'awardAchievements'])->name('doctor.award-achievements');
     Route::post('award-achievements-store', [DoctorController::class, 'AwardAchievementsStore'])->name('doctor.AwardAchievementsStore');
-    Route::get('doctor-edit-award-achievements', [DoctorSideNavbarController::class, 'edit_award_achievements'])->name('doctor.editAwardAchievements');
-    Route::post('doctor-award-achievements-update-all', [DoctorSideNavbarController::class, 'award_achievements_update_all'])->name('doctor.AwardAchievementsUpdateAll');
+    Route::get('doctor-edit-award-achievements/{id}', [DoctorSideNavbarController::class, 'edit_award_achievements'])->name('doctor.editAwardAchievements');
+    Route::put('doctor-award-achievements-update-all', [DoctorSideNavbarController::class, 'award_achievements_update_all'])->name('doctor.AwardAchievementsUpdateAll');
+    Route::delete('/doctor-award-achievements/{id}', [DoctorController::class, 'deleteAwardAchievement'])->name('doctor-award-achievements.delete');
 
     // Route::get('user-fav', [UserSideNavbarController::class, 'user_profile_fav'])->name('user.profileFav');
 

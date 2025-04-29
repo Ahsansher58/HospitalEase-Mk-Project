@@ -79,8 +79,8 @@ class DoctorSideNavbarController extends Controller
     }
     $user           = Auth::user();
     $doctor         = Doctor::where('user_id', $user->id)->first();
-    $doctor_profile = DoctorAwardAchievement::where('doctor_id', $doctor->id)->get();
-    return view('frontend.content.doctors.award-achievements', compact('user', 'doctor_profile'));
+    $doctorAchievement = DoctorAwardAchievement::where('doctor_id', $doctor->id)->get();
+    return view('frontend.content.doctors.award-achievements', compact('user', 'doctorAchievement'));
   }
 
   public function edit_personnel_info()
@@ -119,13 +119,14 @@ class DoctorSideNavbarController extends Controller
     return view('frontend.content.doctors.edit_educational_qualifications', compact('user', 'uniqueLocalities', 'uniqueCities', 'uniqueStates', 'uniqueCountries', 'businessCategories', 'businessSubCategories', 'locationMaster', 'doctor_profile'));
   }
 
-  public function edit_award_achievements()
+  public function edit_award_achievements($id)
   {
     if (!Auth::check()) {
       return redirect('/');
     }
     $user                  = Auth::user();
-    $doctor_profile        = Doctor::where('user_id', $user->id)->first();
+    $doctor                = Doctor::where('user_id', $user->id)->first();
+    $doctor_profile        = DoctorAwardAchievement::find($id);
     $categories            = BusinessCategory::orderBy('order_no')->get();
     $businessCategories    = $categories->where('is_sub_category', false);
     $businessSubCategories = $categories->where('is_sub_category', true);
