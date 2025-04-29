@@ -10,9 +10,10 @@ class DoctorSocialMedia extends Model
   use HasFactory;
 
   protected $fillable = [
-    'user_id',
-    'name',
-    'icon',
-    'link',
+    'doctor_id',
+    'youtube_link',
+    'facebook_link',
+    'linkdin_link',
+    'instagram_link',
   ];
 }

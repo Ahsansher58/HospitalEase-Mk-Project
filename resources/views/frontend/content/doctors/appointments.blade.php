@@ -82,8 +82,7 @@
                                         <tr>
                                             <th>Sno</th>
                                             <th>Day </th>
-                                            <th>From </th>
-                                            <th>To </th>
+                                            <th>Timings</th>
                                             <th>Action </th>
                                         </tr>
                                     </thead>
@@ -127,6 +126,73 @@
                                         <option value="Saturday">Saturday</option>
                                         <option value="Sunday">Sunday</option>
                                 </select>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="mb-4">
+                                    <label for="country" class="mb-2">Country</label>
+                                    <select class="selectpicker form-select form-input-control w-100"
+                                        name="country" required>
+                                        @foreach ($uniqueCountries as $country)
+                                            <option value="{{ $country }}">
+                                                {{ $country }}</option>
+                                        @endforeach
+                                    </select>
+                                    <div class="invalid-feedback">
+                                        Please select country
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="mb-4">
+                                    <label for="state" class="mb-2">State</label>
+                                    <select class="selectpicker form-select form-input-control w-100"
+                                        name="state" required>
+                                        @foreach ($uniqueStates as $state)
+                                            <option value="{{ $state }}">
+                                                {{ $state }}</option>
+                                        @endforeach
+                                    </select>
+                                    <div class="invalid-feedback">
+                                        Please select state
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="col-lg-6">
+                                <div class="mb-4">
+                                    <label for="city" class="mb-2">City</label>
+                                    <select class="selectpicker form-select form-input-control w-100"
+                                        name="city" required>
+                                        @foreach ($uniqueCities as $city)
+                                            <option value="{{ $city }}">
+                                                {{ $city }}</option>
+                                        @endforeach
+                                    </select>
+                                    <div class="invalid-feedback">
+                                        Please select city
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="mb-4">
+                                    <label for="locality" class="mb-2">Locality</label>
+                                    <select class="selectpicker form-select form-input-control w-100"
+                                        name="locality" required>
+                                        @foreach ($uniqueLocalities as $locality)
+                                            <option value="{{ $locality }}">
+                                                {{ $locality }}</option>
+                                        @endforeach
+                                    </select>
+                                    <div class="invalid-feedback">
+                                        Please select locality
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Choose Hospital -->
+                            <div class="col-md-6 mt-2 mb-2">
+                                <label class="form-label" for="formValidationPlacement">Hospital</label>
+                                <input type="text" class="form-control form-input-control" name="to_time" placeholder="Search Hospital" required>
                             </div>
 
                             <div class="col-lg-12">
@@ -222,9 +288,6 @@
                 },
                 {
                     data: 3
-                },
-                {
-                    data: 4
                 },
             ]
         });

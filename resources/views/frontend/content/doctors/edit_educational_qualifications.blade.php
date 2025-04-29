@@ -62,12 +62,12 @@
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="mb-3">
-                                            <label for="degree" class="mb-2">Degree Name</label>
+                                            <label for="degree" class="mb-2">Degree Achieved</label>
                                             <input type="text" class="form-control form-input-control"
                                                 name="degree" id="degree" value="{{ $doctor_profile->degree ?? '' }}" required>
                                         </div>
                                         <div class="invalid-feedback">
-                                            Please enter Degree Name
+                                            Please enter Degree Achieved
                                         </div>
                                     </div>
                                     <div class="col-lg-6">

@@ -7,6 +7,8 @@ use App\Models\Doctor;
 use App\Models\DoctorSocialMedia;
 use App\Models\DoctorAppointment;
 use App\Models\DoctorAwardAchievement;
+use App\Models\BusinessCategory;
+use App\Models\LocationsMaster;
 use App\Models\DoctorEducationalQualification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -128,17 +130,21 @@ class DoctorController extends Controller
   {
     // Validate the fields
     $validatedData = $request->validate([
-      'name' => 'required|string|max:255',
-      'icon' => 'required|string|max:255',
-      'link' => 'required|string|max:255',
+      'youtube_link'   => 'nullable|string|max:255',
+      'facebook_link'  => 'nullable|string|max:255',
+      'linkdin_link'   => 'nullable|string|max:255',
+      'instagram_link' => 'nullable|string|max:255',
     ]);
 
     // Create a new record with the authenticated user's ID
+    $user   = Auth::user();
+    $doctor = Doctor::where('user_id' , $user->id)->first();
     DoctorSocialMedia::create([
-      'user_id' => Auth::id(),
-      'name'    => $validatedData['name'],
-      'icon'    => $validatedData['icon'],
-      'link'    => $validatedData['link'],
+      'doctor_id'      => $doctor->id,
+      'youtube_link'   => $validatedData['youtube_link'],
+      'facebook_link'  => $validatedData['facebook_link'],
+      'linkdin_link'   => $validatedData['linkdin_link'],
+      'instagram_link' => $validatedData['instagram_link'],
     ]);
 
     // Redirect back with success message
@@ -150,18 +156,21 @@ class DoctorController extends Controller
   public function getSocialMedia()
   {
     // Fetch medicines data from the database (example)
-    $socialMedia = DoctorSocialMedia::where('user_id', Auth::id())->orderBy('id', 'desc')->get();
+    $user        = Auth::user();
+    $doctor      = Doctor::where('user_id' , $user->id)->first();
+    $socialMedia = DoctorSocialMedia::where('doctor_id', $doctor->id)->orderBy('id', 'desc')->get();
 
-    // Format the data to match the structure for DataTable
     $data = $socialMedia->map(function ($media) {
       return [
         $media->id,
-        $media->name,
-        $media->icon,
-        $media->link,
+        $media->youtube_link,
+        $media->facebook_link,
+        $media->linkdin_link,
+        $media->instagram_link,
         "<button class='btn p-0 border-0' onclick='edit_popup(" . $media->id . ")'><img src='" . asset('assets/frontend/images/icons/edit.svg') . "' /></button>
              <button class='btn p-0 border-0' onclick='delete_social_media(" . $media->id . ")'><img src='" . asset('assets/frontend/images/icons/delete.svg') . "' /></button>"
       ];
+          
     });
 
     // Return the data as JSON
@@ -173,9 +182,10 @@ class DoctorController extends Controller
     $socialMedia = DoctorSocialMedia::find($id);
 
     $validated = $request->validate([
-      'name' => 'required|string|max:255',
-      'icon' => 'required|string|max:255',
-      'link' => 'required|string|max:255',
+      'youtube_link'   => 'nullable|string|max:255',
+      'facebook_link'  => 'nullable|string|max:255',
+      'linkdin_link'   => 'nullable|string|max:255',
+      'instagram_link' => 'nullable|string|max:255',
     ]);
 
     if ($validated) {
@@ -259,7 +269,25 @@ class DoctorController extends Controller
       return redirect('/');
     }
     $user = Auth::user();
-    return view('frontend.content.doctors.appointments', compact('user'));
+    $categories            = BusinessCategory::orderBy('order_no')->get();
+    $businessCategories    = $categories->where('is_sub_category', false);
+    $businessSubCategories = $categories->where('is_sub_category', true);
+    $locationMaster        = LocationsMaster::all();
+    $uniqueLocalities      = LocationsMaster::select('locality')->distinct()->pluck('locality');
+    $uniqueCities          = LocationsMaster::select('city')->distinct()->pluck('city');
+    $uniqueStates          = LocationsMaster::select('state')->distinct()->pluck('state');
+    $uniqueCountries       = LocationsMaster::select('country')->distinct()->pluck('country');
+    return view('frontend.content.doctors.appointments', compact(
+      'user',
+      'categories',
+      'businessCategories',
+      'businessSubCategories',
+      'locationMaster' ,
+      'uniqueLocalities',
+      'uniqueCities'  ,
+      'uniqueStates' ,
+      'uniqueCountries',
+    ));
   }
 
   public function getAppointments()
@@ -283,8 +311,7 @@ class DoctorController extends Controller
       return [
         $appointment->id,
         $appointment->day,
-        $finalFromTime,
-        $finalToTime,
+        $finalFromTime . " - " . $finalToTime,
         "<button class='btn p-0 border-0' onclick='edit_popup(" . $appointment->id . ")'><img src='" . asset('assets/frontend/images/icons/edit.svg') . "' /></button>
              <button class='btn p-0 border-0' onclick='delete_appointment(" . $appointment->id . ")'><img src='" . asset('assets/frontend/images/icons/delete.svg') . "' /></button>"
       ];

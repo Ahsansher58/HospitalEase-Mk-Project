@@ -72,10 +72,11 @@
                                 <table id="socialMedia" class="table mb-0 social-media-table">
                                     <thead>
                                         <tr>
-                                            <th>Sno</th>
-                                            <th>Name </th>
-                                            <th>Icon </th>
-                                            <th>Link </th>
+                                            <th>Sno </th>
+                                            <th>Youtube Link </th>
+                                            <th>Facebook Link </th>
+                                            <th>linkdin Link </th>
+                                            <th>Instagram Link </th>
                                             <th>Action </th>
                                         </tr>
                                     </thead>
@@ -107,19 +108,24 @@
                         @csrf
                         <div class="row gy-3">
                             <div class="col-lg-12">
-                                <label class="mb-2"> Name<span class="text-danger">*</span></label>
-                                <input type="text" class="form-control form-input-control" name="name"
-                                    placeholder="Enter Name" required>
+                                <label class="mb-2"> Youtube Link<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control form-input-control" name="youtube_link"
+                                    placeholder="Enter Youtube Link" required>
                             </div>
                             <div class="col-lg-12">
-                                <label class="mb-2"> Icon<span class="text-danger">*</span></label>
-                                <input type="text" class="form-control form-input-control" name="icon"
-                                    placeholder="Enter Icon" required>
+                                <label class="mb-2"> Facebook Link<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control form-input-control" name="facebook_link"
+                                    placeholder="Enter Facebook Link" required>
                             </div>
                             <div class="col-lg-12">
-                                <label class="mb-2">Link <span class="text-danger">*</span></label>
-                                <input class="form-control form-input-control" name="link"
-                                    placeholder="Enter Link" required>
+                                <label class="mb-2"> Linkdin Link<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control form-input-control" name="linkdin_link"
+                                    placeholder="Enter Linkdin Link" required>
+                            </div>
+                            <div class="col-lg-12">
+                                <label class="mb-2"> Instagram Link<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control form-input-control" name="instagram_link"
+                                    placeholder="Enter Instagram Link" required>
                             </div>
                         </div>
 
@@ -148,19 +154,24 @@
                         @csrf
                         <div class="row gy-3">
                             <div class="col-lg-12">
-                                <label class="mb-2">Name<span class="text-danger">*</span></label>
-                                <input type="text" class="form-control form-input-control" id="name"
-                                    name="name" required>
+                                <label class="mb-2">Youtube Link<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control form-input-control" id="youtube_link"
+                                    name="youtube_link" required>
                             </div>
                             <div class="col-lg-12">
-                                <label class="mb-2">Icon <span class="text-danger">*</span></label>
-                                <input class="form-control form-input-control" id="icon"
-                                    name="icon" required>
+                                <label class="mb-2">Facebook Link<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control form-input-control" id="facebook_link"
+                                    name="facebook_link" required>
                             </div>
                             <div class="col-lg-12">
-                                <label class="mb-2">Link <span class="text-danger">*</span></label>
-                                <input class="form-control form-input-control" id="link"
-                                    name="link" required>
+                                <label class="mb-2">Linkdin Link<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control form-input-control" id="linkdin_link"
+                                    name="linkdin_link" required>
+                            </div>
+                            <div class="col-lg-12">
+                                <label class="mb-2">Instagram Link<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control form-input-control" id="instagram_link"
+                                    name="instagram_link" required>
                             </div>
                         </div>
 
@@ -204,6 +215,9 @@
                 },
                 {
                     data: 4
+                },
+                {
+                    data: 5
                 }
             ]
         });
@@ -262,9 +276,10 @@
                 method: 'GET',
                 success: function(data) {
                     // Populate the modal fields with the fetched data
-                    $('#name').val(data.name);
-                    $('#icon').val(data.icon);
-                    $('#link').val(data.link);
+                    $('#youtube_link').val(data.youtube_link);
+                    $('#facebook_link').val(data.facebook_link);
+                    $('#linkdin_link').val(data.linkdin_link);
+                    $('#instagram_link').val(data.instagram_link);
                     $('#social_media_id').val(data.id);
 
                     // Open the modal

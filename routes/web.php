@@ -446,7 +446,7 @@ Route::prefix('doctor')->group(function () {
 
     // Educational
     Route::get('educational-qualifications', [DoctorSideNavbarController::class, 'educationalQualifications'])->name('doctor.educational-qualifications');
-    Route::get('doctor-edit-educational-qualifications/{id}', [DoctorSideNavbarController::class, 'edit_educational_qualifications'])->name('doctor.editEducationalQualifications');
+    Route::get('edit-educational-qualifications/{id}', [DoctorSideNavbarController::class, 'edit_educational_qualifications'])->name('doctor.editEducationalQualifications');
     Route::post('doctor-educational-qualifications-store', [DoctorSideNavbarController::class, 'educational_qualifications_store'])->name('doctor.EducationalQualificationsStore');
     Route::put('doctor-educational-qualifications-update-all', [DoctorSideNavbarController::class, 'educational_qualifications_update_all'])->name('doctor.EducationalQualificationsUpdateAll');
     Route::delete('/doctor-educational-qualifications/{id}', [DoctorController::class, 'deleteEducationalQualification'])->name('doctor-educational-qualifications.delete');
@@ -473,12 +473,12 @@ Route::prefix('doctor')->group(function () {
 
 
     // Appointments Crud
-    Route::get('appointments', [DoctorController::class, 'appointments'])->name('doctor.appointments');
-    Route::post('appointment-store', [DoctorController::class, 'appointment_store'])->name('doctor.appointment-store');
-    Route::get('ajax-appointment', [DoctorController::class, 'getAppointments'])->name('doctor.getAppointments');
-    Route::put('update-appointment/{id}', [DoctorController::class, 'updateAppointment'])->name('doctor.updateAppointment');
-    Route::get('edit-appointment/{id}', [DoctorController::class, 'editGetAppointment'])->name('doctor.editGetAppointment');
-    Route::delete('/appointment/{id}', [DoctorController::class, 'deleteAppointment'])->name('appointment.delete');
+    Route::get('timings', [DoctorController::class, 'appointments'])->name('doctor.appointments');
+    Route::post('timings-store', [DoctorController::class, 'appointment_store'])->name('doctor.appointment-store');
+    Route::get('ajax-timings', [DoctorController::class, 'getAppointments'])->name('doctor.getAppointments');
+    Route::put('update-timings/{id}', [DoctorController::class, 'updateAppointment'])->name('doctor.updateAppointment');
+    Route::get('edit-timings/{id}', [DoctorController::class, 'editGetAppointment'])->name('doctor.editGetAppointment');
+    Route::delete('/timings/{id}', [DoctorController::class, 'deleteAppointment'])->name('appointment.delete');
 
     // Logout
   Route::get('logout', [DoctorController::class, 'doctor_logout'])->name('doctors.logout');
