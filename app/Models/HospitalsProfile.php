@@ -24,20 +24,24 @@ class HospitalsProfile extends Model
   protected $fillable = [
     'hospital_id',
     'hospital_name',
+    'hospital_images',
+    'hospital_slug ',
     'description',
     'specialization',
-    'insurances',
     'medical_system',
+    'insurances',
     'phone',
     'emergency_contact',
     'email',
     'website',
     'location',
     'facilities',
-    'values',
-    'hospital_slug',
-    'hospital_images',
-    'other_data'
+    'country',
+    'state',
+    'city',
+    'locality',
+    // 'values',
+    'other_data',
   ];
 
   /**

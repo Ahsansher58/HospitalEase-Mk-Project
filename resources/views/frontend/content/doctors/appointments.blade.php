@@ -3,6 +3,12 @@
 @section('title', 'Hospital Ease - Timings')
 @include('frontend.includes.favicon')
 @section('content')
+<style type="text/css">
+    .ui-autocomplete {
+        position : absolute;
+        z-index  : 1050 !important;
+    }
+</style>
     @include('frontend.includes.after-login-doctor-header')
     <!--MAIN-->
     <main class="inner-page">
@@ -23,7 +29,7 @@
                     <div class="col-xl-9">
                         <div class="hospital-list-block my-favourite-hospital frame">
                             <h3 class="font-medium">Timings</h3>
-                            <form autocomplete="off">
+                            <form>
                                 <div class="row mb-4 g-2 align-items-center">
                                     <div class="col-md-4">
                                         <div class="autocomplete">
@@ -190,21 +196,16 @@
                                 </div>
                             </div>
                             <!-- Choose Hospital -->
-                            <div class="col-md-6 mt-2 mb-2">
-                                <label class="form-label" for="formValidationPlacement">Hospital</label>
-                                <input type="text" class="form-control form-input-control search_hospital" name="search_hospital" placeholder="Search Hospital" required>
-                                <div class="position-relative">
-                                    <input type="text" class="form-control form-input-control search_hospital" name="search_hospital" placeholder="Search Hospital" required style="display  :none !important;">
-                                    <div class="hospital-dropdown dropdown-menu w-100" style="
-                                        display  :none !important;
-                                        position : absolute;
-                                        top      : 100%;
-                                        ">   
-                                    </div>
-                                </div>
-
+                            <div class="col-md-6">
+                                <div class="mb-4">
+                                    <label class="form-label" for="formValidationPlacement">Choose Hospital</label>
+                                    <div class="input-group autocomplete">
+                                        <input type="text" class="form-control form-input-control hospital-select" name="hospital_name" placeholder="Search Hospital" required>
+                                            <input type="hidden" name="hospital_id">
+                                            <ul class="searchResult"></ul> 
+                                    </div> 
+                                </div> 
                             </div>
-
                             <div class="col-lg-12">
                                 <label class="mb-2"> From Time<span class="text-danger">*</span></label>
                                 <input type="time" class="form-control form-input-control" name="from_time" placeholder="Enter From Time" required>
@@ -224,6 +225,7 @@
             </div>
         </div>
     </div>
+
     <!-- Edit Modal -->
     <div class="modal fade" id="editModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="editModalLabel" aria-hidden="true">
@@ -251,6 +253,79 @@
                                         <option value="Sunday">Sunday</option>
                                 </select>
                             </div>
+                            <div class="col-lg-6">
+                                <div class="mb-4">
+                                    <label for="country" class="mb-2">Country</label>
+                                    <select class="selectpicker form-select form-input-control w-100"
+                                        name="country" required>
+                                        @foreach ($uniqueCountries as $country)
+                                            <option value="{{ $country }}">
+                                                {{ $country }}</option>
+                                        @endforeach
+                                    </select>
+                                    <div class="invalid-feedback">
+                                        Please select country
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="mb-4">
+                                    <label for="state" class="mb-2">State</label>
+                                    <select class="selectpicker form-select form-input-control w-100"
+                                        name="state" required>
+                                        @foreach ($uniqueStates as $state)
+                                            <option value="{{ $state }}">
+                                                {{ $state }}</option>
+                                        @endforeach
+                                    </select>
+                                    <div class="invalid-feedback">
+                                        Please select state
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="col-lg-6">
+                                <div class="mb-4">
+                                    <label for="city" class="mb-2">City</label>
+                                    <select class="selectpicker form-select form-input-control w-100"
+                                        name="city" required>
+                                        @foreach ($uniqueCities as $city)
+                                            <option value="{{ $city }}">
+                                                {{ $city }}</option>
+                                        @endforeach
+                                    </select>
+                                    <div class="invalid-feedback">
+                                        Please select city
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="mb-4">
+                                    <label for="locality" class="mb-2">Locality</label>
+                                    <select class="selectpicker form-select form-input-control w-100"
+                                        name="locality" required>
+                                        @foreach ($uniqueLocalities as $locality)
+                                            <option value="{{ $locality }}">
+                                                {{ $locality }}</option>
+                                        @endforeach
+                                    </select>
+                                    <div class="invalid-feedback">
+                                        Please select locality
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Choose Hospital -->
+                            <div class="col-md-6">
+                                <div class="mb-4">
+                                    <label class="form-label" for="formValidationPlacement">Choose Hospital</label>
+                                    <div class="input-group autocomplete">
+                                        <input type="text" class="form-control form-input-control hospital-select" name="hospital_name" placeholder="Search Hospital" required>
+                                            <input type="hidden" name="hospital_id">
+                                            <ul class="searchResult"></ul> 
+                                    </div> 
+                                </div> 
+                            </div>
                             <div class="col-lg-12">
                                 <label class="mb-2"> From Time<span class="text-danger">*</span></label>
                                 <input type="time" class="form-control form-input-control" name="from_time" id="from_time" required>
@@ -272,45 +347,57 @@
         </div>
     </div>
 
+
+<!-- jQuery UI JS -->
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
     <script>
-        $(document).ready(function(){
-            $('.search_hospital').on('keyup', function(){
-                let country  = $('select[name="country"]').val();
-                let state    = $('select[name="state"]').val();
-                let city     = $('select[name="city"]').val();
-                let locality = $('select[name="locality"]').val();
-                let search   = $('input[name="search_hospital"]').val();
 
-                let url = `/search-hospitals?country=${country}&state=${state}&city=${city}&locality=${locality}&search=${search}`;
-
-                if (search.length >= 2) {
+        $(document).ready(function() {
+            $('.hospital-select').autocomplete({
+                autoFocus: true,
+                minLength: 2,
+                source: function (request, response) {
                     $.ajax({
-                        url: url,
-                        type: 'GET',
-                        success: function(response) {
-                            // Assuming response is an array of hospital names
-                            let dropdown = $('.hospital-dropdown');
-                            dropdown.empty(); // Clear old results
-
-                            if(response.length > 0){
-                                response.forEach(function(item){
-                                    dropdown.append(`<div class="dropdown-item hospital-option">${item.name}</div>`);
-                                });
-                                dropdown.show();
+                        url      : "{{ route('search-hospitals') }}",
+                        type     : 'POST',
+                        dataType : 'json',
+                        data     : {
+                            _token      : '{{ csrf_token() }}',
+                            search_text : request.term,
+                            country     : $('[name="country"]').val(),
+                            state       : $('[name="state"]').val(),
+                            city        : $('[name="city"]').val(),
+                            locality    : $('[name="locality"]').val(),
+                        },
+                        success: function (data) {
+                            if (data.result && data.result.length > 0) {
+                                response($.map(data.result, function (item) {
+                                    return {
+                                        label: item.name + ' - ' + item.city + ' (' + item.phone_no + ')',
+                                        value: item.name,
+                                        id: item.id
+                                    };
+                                }));
                             } else {
-                                dropdown.hide();
+                                response([]);
+                                $('[name="hospital_id"]').val('');
                             }
+                        },
+                        error: function () {
+                            console.error("Error fetching hospitals");
+                            response([]);
                         }
                     });
-                }
-            });
-
-            // Optional: fill input on click
-            $(document).on('click', '.hospital-option', function(){
-                $('.search_hospital').val($(this).text());
-                $('.hospital-dropdown').hide();
+                },
+                select: function (event, ui) {
+                    event.preventDefault();
+                    $(this).val(ui.item.value);
+                    $('[name="hospital_id"]').val(ui.item.id);
+                },
+                appendTo: '.modal-body' // Append suggestions to the modal body
             });
         });
+
 
         var table = $('#Appointment').DataTable({
             ajax: {
@@ -402,6 +489,7 @@
                     $('#from_time').val(data.from_time);
                     $('#to_time').val(data.to_time);
                     $('#appointment_id').val(data.id);
+                    $('#editModal').find('[name="country"]').val();
 
                     // Open the modal
                     $('#editModal').modal('show');

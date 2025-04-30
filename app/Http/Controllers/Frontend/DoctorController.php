@@ -8,6 +8,7 @@ use App\Models\DoctorSocialMedia;
 use App\Models\DoctorAppointment;
 use App\Models\DoctorAwardAchievement;
 use App\Models\BusinessCategory;
+use App\Models\HospitalsProfile;
 use App\Models\LocationsMaster;
 use App\Models\DoctorEducationalQualification;
 use Illuminate\Http\Request;
@@ -263,7 +264,7 @@ class DoctorController extends Controller
   }
 
 
-  public function appointments(Request $request)
+  public function appointments()
   {
     if (!Auth::check()) {
       return redirect('/');
@@ -277,29 +278,6 @@ class DoctorController extends Controller
     $uniqueCities          = LocationsMaster::select('city')->distinct()->pluck('city');
     $uniqueStates          = LocationsMaster::select('state')->distinct()->pluck('state');
     $uniqueCountries       = LocationsMaster::select('country')->distinct()->pluck('country');
-
-    if ($request->ajax()) {
-      $country  = $request->country;
-      $state    = $request->state;
-      $city     = $request->city;
-      $locality = $request->locality;
-      $search   = $request->search;
-
-      $data = HospitalsProfile::where('country' , $country)
-      ->select('hospitals_profile.*')
-      ->where('state' , $state)
-      ->where('city' , $city)
-      ->where('locality' , $locality)
-      ->where('hospitals_profile.hospital_name', 'like', '%'. $search .'%')
-      ->get();
-
-      echo "<pre>";
-      print_r($data);
-      echo "</pre>";
-      die();
-          
-    } 
-    
     return view('frontend.content.doctors.appointments', compact(
       'user',
       'categories',
@@ -311,6 +289,55 @@ class DoctorController extends Controller
       'uniqueStates' ,
       'uniqueCountries',
     ));
+  }
+
+  public function searchHospitals(Request $request)
+  {
+    if ($request->ajax()) {
+        $term     = $request->input('search_text');
+        $country  = $request->input('country');
+        $state    = $request->input('state');
+        $city     = $request->input('city');
+        $locality = $request->input('locality');
+
+        $query = HospitalsProfile::query();
+
+        if (!empty($term)) {
+            $query->where('hospital_name', 'LIKE', '%' . $term . '%');
+        }
+
+        if (!empty($country)) {
+            $query->where('country', $country);
+        }
+
+        if (!empty($state)) {
+            $query->where('state', $state);
+        }
+
+        if (!empty($city)) {
+            $query->where('city', $city);
+        }
+
+        if (!empty($locality)) {
+            $query->where('locality', $locality);
+        }
+
+        $results = $query->limit(10)->get();
+
+        return response()->json([
+            'result' => $results->map(function ($hospital) {
+                return [
+                    'id'       => $hospital->id,
+                    'name'     => $hospital->hospital_name,
+                    'phone_no' => $hospital->phone,
+                    'city'     => $hospital->city,
+                ];
+            }),
+        ]);
+    }
+
+    // Optional fallback in case request is not AJAX
+    return response()->json(['error' => 'Invalid request'], 400);
   }
 
   public function getAppointments()
@@ -348,9 +375,14 @@ class DoctorController extends Controller
   {
       // Validate the fields
       $validatedData = $request->validate([
-          'day'       => 'required|string|max:255',
-          'from_time' => 'required|string|max:255',
-          'to_time'   => 'required|string|max:255',
+          'day'         => 'required|string|max:255',
+          'from_time'   => 'required|string|max:255',
+          'to_time'     => 'required|string|max:255',
+          'hospital_id' => 'required',
+          'country'     => 'required',
+          'state'       => 'required',
+          'city'        => 'required',
+          'locality'    => 'required',
       ]);
 
       // Convert time to H:i:s format
@@ -367,16 +399,26 @@ class DoctorController extends Controller
 
       if ($existingAppointment) {
           $existingAppointment->update([
-              'from_time' => $fromTime,
-              'to_time'   => $toTime,
+              'from_time'   => $fromTime,
+              'to_time'     => $toTime,
+              'hospital_id' => $request->hospital_id,
+              'country'     => $request->country,
+              'state'       => $request->state,
+              'city'        => $request->city,
+              'locality'    => $request->locality,
           ]);
       } else {
           // Create a new appointment
           DoctorAppointment::create([
-              'doctor_id' => $doctor->id,
-              'day'       => $validatedData['day'],
-              'from_time' => $fromTime,
-              'to_time'   => $toTime,
+              'doctor_id'   => $doctor->id,
+              'day'         => $validatedData['day'],
+              'from_time'   => $fromTime,
+              'to_time'     => $toTime,
+              'hospital_id' => $request->hospital_id,
+              'country'     => $request->country,
+              'state'       => $request->state,
+              'city'        => $request->city,
+              'locality'    => $request->locality,
           ]);
       }
 

@@ -14,5 +14,10 @@ class DoctorAppointment extends Model
     'day',
     'from_time',
     'to_time',
+    'hospital_id',
+    'country',
+    'state',
+    'city',
+    'locality',
   ];
 }

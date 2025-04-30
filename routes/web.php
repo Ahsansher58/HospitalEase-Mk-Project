@@ -479,7 +479,8 @@ Route::prefix('doctor')->group(function () {
     Route::put('update-timings/{id}', [DoctorController::class, 'updateAppointment'])->name('doctor.updateAppointment');
     Route::get('edit-timings/{id}', [DoctorController::class, 'editGetAppointment'])->name('doctor.editGetAppointment');
     Route::delete('/timings/{id}', [DoctorController::class, 'deleteAppointment'])->name('appointment.delete');
-    Route::delete('/search-hospitals', [DoctorController::class, 'appointments'])->name('search-hospitals');
+    Route::post('/search-hospitals', [DoctorController::class, 'searchHospitals'])->name('search-hospitals');
+
 
     // Logout
   Route::get('logout', [DoctorController::class, 'doctor_logout'])->name('doctors.logout');

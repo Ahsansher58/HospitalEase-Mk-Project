@@ -23,6 +23,11 @@
 
 <script src="{{ asset('assets/frontend/js/dataTables.js') }}"></script>
 
+<!--Jquery Ui JS-->
+<script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
+
+
+
 <script>
     $(".toggle-password").click(function() {
         $(this).toggleClass("fa-eye fa-eye-slash");
