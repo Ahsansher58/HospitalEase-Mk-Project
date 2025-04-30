@@ -4,9 +4,40 @@
 @include('frontend.includes.favicon')
 @section('content')
 <style type="text/css">
-    .ui-autocomplete {
-        position : absolute;
-        z-index  : 1050 !important;
+    .autocomplete{
+        position: relative;
+    }
+    .autocomplete .searchResult{
+        list-style: none;
+        padding: 0px;
+        width: 78%;
+        position: absolute;
+        margin: 0;
+        margin-top: 40px;
+        background: white;
+        z-index: 5;
+    }
+
+    .is-invalid {
+        border-color: #dc3545 !important; /* Red border for invalid fields */
+        box-shadow: 0 0 5px rgba(220, 53, 69, 0.5); /* Optional: Add a red glow */
+    }
+
+    .autocomplete .searchResult li{
+        background: #F2F3F4;
+        padding: 10px;
+        margin-bottom: 1px;
+        white-space: break-spaces;
+    }
+
+    .autocomplete .searchResult li:nth-child(even){
+        background: #E5E7E9;
+        color: black;
+    }
+
+    .autocomplete .searchResult li:hover{
+        cursor: pointer;
+        background: #CACFD2;
     }
 </style>
     @include('frontend.includes.after-login-doctor-header')
@@ -52,8 +83,8 @@
                                     <div class="col-md-3">
                                         <div class="search-widget search-symptoms bg-light border">
                                             <div class="input-group">
-                                                <input type="text" class="form-control" id="searchAppointmentToTime"
-                                                    placeholder="Search To Time">
+                                                <input type="text" class="form-control" id="searchAppointmentHospital"
+                                                    placeholder="Search Hospital">
                                             </div>
                                         </div>
                                     </div>
@@ -89,6 +120,7 @@
                                             <th>Sno</th>
                                             <th>Day </th>
                                             <th>Timings</th>
+                                            <th>Hospital Name</th>
                                             <th>Action </th>
                                         </tr>
                                     </thead>
@@ -256,7 +288,7 @@
                             <div class="col-lg-6">
                                 <div class="mb-4">
                                     <label for="country" class="mb-2">Country</label>
-                                    <select class="selectpicker form-select form-input-control w-100"
+                                    <select class="form-select form-input-control w-100 country"
                                         name="country" required>
                                         @foreach ($uniqueCountries as $country)
                                             <option value="{{ $country }}">
@@ -271,7 +303,7 @@
                             <div class="col-lg-6">
                                 <div class="mb-4">
                                     <label for="state" class="mb-2">State</label>
-                                    <select class="selectpicker form-select form-input-control w-100"
+                                    <select class="form-select form-input-control w-100 state"
                                         name="state" required>
                                         @foreach ($uniqueStates as $state)
                                             <option value="{{ $state }}">
@@ -288,7 +320,7 @@
                             <div class="col-lg-6">
                                 <div class="mb-4">
                                     <label for="city" class="mb-2">City</label>
-                                    <select class="selectpicker form-select form-input-control w-100"
+                                    <select class="form-select form-input-control w-100 city"
                                         name="city" required>
                                         @foreach ($uniqueCities as $city)
                                             <option value="{{ $city }}">
@@ -303,7 +335,7 @@
                             <div class="col-lg-6">
                                 <div class="mb-4">
                                     <label for="locality" class="mb-2">Locality</label>
-                                    <select class="selectpicker form-select form-input-control w-100"
+                                    <select class="form-select form-input-control w-100 locality"
                                         name="locality" required>
                                         @foreach ($uniqueLocalities as $locality)
                                             <option value="{{ $locality }}">
@@ -352,52 +384,57 @@
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
     <script>
 
-        $(document).ready(function() {
-            $('.hospital-select').autocomplete({
+        // Initialize hospital autocomplete for a specific modal
+        function initializeHospitalAutocomplete(modalSelector) {
+            $(modalSelector + ' .hospital-select').autocomplete({
                 autoFocus: true,
                 minLength: 2,
-                source: function (request, response) {
+                source: function(request, response) {
+                    if (request.term.length < 2) {
+                        $(modalSelector + ' [name="hospital_id"]').val('');
+                        return false;
+                    }
+
                     $.ajax({
-                        url      : "{{ route('search-hospitals') }}",
-                        type     : 'POST',
-                        dataType : 'json',
-                        data     : {
+                        url: "{{ route('search-hospitals') }}",
+                        type: 'POST',
+                        dataType: 'json',
+                        data: {
                             _token      : '{{ csrf_token() }}',
                             search_text : request.term,
-                            country     : $('[name="country"]').val(),
-                            state       : $('[name="state"]').val(),
-                            city        : $('[name="city"]').val(),
-                            locality    : $('[name="locality"]').val(),
+                            country     : $(modalSelector + ' [name="country"]').val(),
+                            state       : $(modalSelector + ' [name="state"]').val(),
+                            city        : $(modalSelector + ' [name="city"]').val(),
+                            locality    : $(modalSelector + ' [name="locality"]').val(),
                         },
-                        success: function (data) {
-                            if (data.result && data.result.length > 0) {
-                                response($.map(data.result, function (item) {
-                                    return {
-                                        label: item.name + ' - ' + item.city + ' (' + item.phone_no + ')',
-                                        value: item.name,
-                                        id: item.id
-                                    };
-                                }));
-                            } else {
-                                response([]);
-                                $('[name="hospital_id"]').val('');
+                        success: function(json) {
+                            if (json.error) {
+                                $(modalSelector + ' [name="hospital_id"]').val('');
+                                return false;
                             }
-                        },
-                        error: function () {
-                            console.error("Error fetching hospitals");
-                            response([]);
+                            response($.map(json.result, function(item) {
+                                return {
+                                    id: item.id,
+                                    name: item.name,
+                                    label: item.name + ' - ' + item.city + ' (' + item.phone_no + ')'
+                                };
+                            }));
                         }
                     });
                 },
-                select: function (event, ui) {
+                select: function(event, ui) {
                     event.preventDefault();
-                    $(this).val(ui.item.value);
-                    $('[name="hospital_id"]').val(ui.item.id);
+                    $(this).val(ui.item.name);
+                    $(modalSelector + ' [name="hospital_id"]').val(ui.item.id);
+                    return false;
                 },
-                appendTo: '.modal-body' // Append suggestions to the modal body
-            });
-        });
-
+                appendTo: modalSelector + ' .modal-body'
+            }).data("ui-autocomplete")._renderItem = function(ul, item) {
+                return $("<li>")
+                .append("<a>" + item.label + "</a>")
+                .appendTo(ul);
+            };
+        }
 
         var table = $('#Appointment').DataTable({
             ajax: {
@@ -425,10 +462,12 @@
                 {
                     data: 3
                 },
+                {
+                    data: 4
+                },
             ]
         });
         $(document).ready(function() {
-
             //filter
             $('#searchAppointmentDay').on('keyup', function() {
                 table.column(1).search(this.value).draw();
@@ -436,7 +475,7 @@
             $('#searchAppointmentFromTime').on('keyup', function() {
                 table.column(2).search(this.value).draw();
             });
-            $('#searchAppointmentToTime').on('keyup', function() {
+            $('#searchAppointmentHospital').on('keyup', function() {
                 table.column(3).search(this.value).draw();
             });
             // Handle form submission (to update data)
@@ -477,22 +516,56 @@
                 });
             });
         });
-        // Open the modal on Edit button click
+
+        $(document).ready(function() {
+            // Initialize for create modal
+            initializeHospitalAutocomplete('#appointments_modal');
+            
+            // Initialize for edit modal when it's shown
+            $('#editModal').on('shown.bs.modal', function() {
+                initializeHospitalAutocomplete('#editModal');
+            });
+
+            // Close search results when clicking outside
+            document.addEventListener("click", function(event) {
+                if (!$(event.target).closest('.hospital-select').length && 
+                    !$(event.target).closest('.searchResult').length) {
+                    $(".searchResult").empty();
+                }
+            });
+        });
+
+        // Edit popup function
         function edit_popup(appointmentId) {
             var editUrl = '{{ route('doctor.editGetAppointment', ':id') }}'.replace(':id', appointmentId);
+
             $.ajax({
                 url: editUrl,
                 method: 'GET',
                 success: function(data) {
-                    // Populate the modal fields with the fetched data
-                    $('#day').val(data.day);
-                    $('#from_time').val(data.from_time);
-                    $('#to_time').val(data.to_time);
-                    $('#appointment_id').val(data.id);
-                    $('#editModal').find('[name="country"]').val();
+                    var modal = $('#editModal');
 
-                    // Open the modal
-                    $('#editModal').modal('show');
+                    // Populate basic fields
+                    modal.find('[name="day"]').val(data.day);
+                    modal.find('[name="from_time"]').val(data.from_time);
+                    modal.find('[name="to_time"]').val(data.to_time);
+                    modal.find('[name="appointment_id"]').val(data.id);
+
+                    // Set location dropdowns
+                    modal.find('[name="country"]').val(data.country).trigger('change');
+                    modal.find('[name="state"]').val(data.state).trigger('change');
+                    modal.find('[name="city"]').val(data.city).trigger('change');
+                    modal.find('[name="locality"]').val(data.locality).trigger('change');
+
+                    // Set hospital inputs
+                    modal.find('[name="hospital_name"]').val(data.hospital_name);
+                    modal.find('[name="hospital_id"]').val(data.hospital_id);
+
+                    // Show the modal
+                    modal.modal('show');
+                },
+                error: function(xhr) {
+                    console.error("Error loading appointment data", xhr.responseText);
                 }
             });
         }

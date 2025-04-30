@@ -344,28 +344,43 @@ class DoctorController extends Controller
   {     
     $user = Auth::user();
     // Fetch medicines data from the database (example)
-    $appointments = DoctorAppointment::leftJoin('doctors' , 'doctors.id' , 'doctor_appointments.doctor_id')
-    ->leftJoin('users' , 'users.id' , 'doctors.user_id')
-    ->select('doctor_appointments.*' , 'doctors.user_id')
+    $appointments = DoctorAppointment::select(
+      'doctor_appointments.*' ,
+      'doctors.user_id' ,
+      'user_profile.address',
+      'hospitals_profile.hospital_name',
+    )
+    ->leftJoin('hospitals_profile','hospitals_profile.id' , 'doctor_appointments.hospital_id')
+    ->leftJoin('users' , 'users.id' , 'hospitals_profile.hospital_id')
+    ->leftJoin('user_profile' , 'users.id' , 'user_profile.user_id')
+    ->leftJoin('doctors' , 'doctors.id' , 'doctor_appointments.doctor_id')
     ->where('doctors.user_id', $user->id)
     ->orderBy('doctor_appointments.id', 'asc')
-    ->get();
+    ->get();       
+
 
     // Format the data to match the structure for DataTable
     $data = $appointments->map(function ($appointment) {
-      $from_time     = $appointment['from_time'];
-      $finalFromTime = date('h:i a', strtotime($from_time)); 
-      $to_time       = $appointment['to_time'];
-      $finalToTime   = date('h:i a', strtotime($to_time));
+        $from_time     = $appointment['from_time'];
+        $finalFromTime = date('h:i a', strtotime($from_time)); 
+        $to_time       = $appointment['to_time'];
+        $finalToTime   = date('h:i a', strtotime($to_time));
 
-      return [
-        $appointment->id,
-        $appointment->day,
-        $finalFromTime . " - " . $finalToTime,
-        "<button class='btn p-0 border-0' onclick='edit_popup(" . $appointment->id . ")'><img src='" . asset('assets/frontend/images/icons/edit.svg') . "' /></button>
+        return [
+            $appointment->id,
+            $appointment->day,
+            $finalFromTime . " - " . $finalToTime,
+            ($appointment->hospital_name ?? '') . "<br>" . 
+            ($appointment->country ?? '') . "<br>" . 
+            ($appointment->state ?? '') . "<br>" . 
+            ($appointment->city ?? '') . "<br>" . 
+            ($appointment->locality ?? '') . "<br>" . 
+            ($appointment->address ?? ''),
+            "<button class='btn p-0 border-0' onclick='edit_popup(" . $appointment->id . ")'><img src='" . asset('assets/frontend/images/icons/edit.svg') . "' /></button>
              <button class='btn p-0 border-0' onclick='delete_appointment(" . $appointment->id . ")'><img src='" . asset('assets/frontend/images/icons/delete.svg') . "' /></button>"
-      ];
+        ];
     });
+
 
     // Return the data as JSON
     return response()->json(['data' => $data]);
@@ -469,7 +484,10 @@ class DoctorController extends Controller
 
   public function editGetAppointment($id)
   {
-    $appointment = DoctorAppointment::find($id);
+    $appointment = DoctorAppointment::leftJoin('hospitals_profile' , 'hospitals_profile.id' , 'doctor_appointments.hospital_id')
+    ->select('doctor_appointments.*' , 'hospitals_profile.hospital_name')
+    ->find($id);
+        
     return response()->json($appointment);
   }
 
@@ -478,9 +496,14 @@ class DoctorController extends Controller
     $appointment = DoctorAppointment::find($id);
 
     $validated = $request->validate([
-      'day'       => 'required|string|max:255',
-      'from_time' => 'required|string|max:255',
-      'to_time'   => 'required|string|max:255',
+      'day'         => 'required|string|max:255',
+      'from_time'   => 'required|string|max:255',
+      'to_time'     => 'required|string|max:255',
+      'hospital_id' => 'required',
+      'country'     => 'required',
+      'state'       => 'required',
+      'city'        => 'required',
+      'locality'    => 'required',
     ]);
 
 
