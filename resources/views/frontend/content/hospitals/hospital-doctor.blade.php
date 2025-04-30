@@ -26,12 +26,15 @@
                                                 class="form-control form-input-control search-control input-md"
                                                 placeholder="Search">
                                         </div>
-                                        <buttn class="btn btn-info btn-md ms-3" data-bs-toggle="modal"
+                                        <button class="btn btn-info btn-md ms-3" data-bs-toggle="modal"
                                             data-bs-target="#addDoctor"><img
                                                 src="{{ asset('assets/frontend/images/icons/plus-icon.svg') }}"
-                                                class="d-md-none" height="16" /> <span class="d-none d-md-block">Add
+                                                class="d-md-none" height="16" /> <span class="d-none d-md-block">Add New
                                                 Doctor</span>
-                                        </buttn>
+                                        </button>
+                                        <button class="btn btn-info btn-md ms-3" data-bs-toggle="modal"
+                                            data-bs-target="#linkRegisteredDoctor"><span class="d-none d-md-block">Link Registered Doctor</span>
+                                        </button>
                                     </div>
                                 </form>
                             </div>
@@ -53,7 +56,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
+                                {{-- <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
                                     <div class="card dr-card rounded-24">
                                         <div class="position-relative">
                                             <img src="{{ asset('assets/frontend/images/dr-img-2.png') }}"
@@ -83,7 +86,7 @@
                                                 data-bs-toggle="modal" data-bs-target="#editDoctor">Edit Profile</a>
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
                                 <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
                                     <div class="card dr-card rounded-24 add-dr-card">
                                         <div class="text-center">
@@ -226,6 +229,45 @@
         </div>
     </div>
 
+    <!-- Modal -->
+    <div class="modal fade" id="linkRegisteredDoctor" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content rounded-24">
+                <div class="modal-header border-0">
+                    <h3 class="modal-title font-regular" id="staticBackdropLabel">Link Registered Doctor</h3>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body mt-4">
+                    <form id="doctorForm" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        @method('POST')
+                        <div class="row g-3">
+                            <div class="col-lg-9">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="mb-4">
+                                            <label class="mb-2">Search Doctor Email<span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control  form-input-control "
+                                                placeholder="Enter report name">
+                                        </div>
+                                    </div>
+                                    <div class="mt-5 text-end">
+                                        <button class="btn btn-cancel font-size-16 font-regular me-2 "
+                                            data-bs-dismiss="modal">Cancel</button>
+                                        <button class="btn btn-info font-regular">Save</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
     <div class="modal fade" id="doctorModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="doctorModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl modal-dialog-centered">
@@ -333,7 +375,7 @@
     @include('frontend.includes.hospital-footer')
     <link rel="stylesheet" href="{{ asset('assets/frontend/css/chosen.css') }}" />
     <script src="{{ asset('assets/frontend/js/chosen.jquery.js') }}"></script>
-    <script>
+    {{-- <script>
         document.addEventListener("DOMContentLoaded", function() {
             const doctorModal = new bootstrap.Modal(document.getElementById("doctorModal"));
 
@@ -421,7 +463,7 @@
             });
 
         });
-    </script>
+    </script> --}}
     <script>
         $(document).ready(function() {
             $(".chosen-select").chosen();
@@ -477,7 +519,7 @@
             btnOuter1.removeClass("file_uploaded");
         });
 
-        function autocomplete(inp, arr) {
+        {{-- function autocomplete(inp, arr) {
             /*the autocomplete function takes two arguments,
             the text field element and an array of possible autocompleted values:*/
             var currentFocus;
@@ -583,6 +625,6 @@
         var doctor = ["Annnu", "Babita", "Simran", "Vipin", "Meena", "Seema"];
 
         /*initiate the autocomplete function on the "myInput" element, and pass along the countries array as possible autocomplete values:*/
-        autocomplete(document.getElementById("doctorInput"), doctor);
+        autocomplete(document.getElementById("doctorInput"), doctor); --}}
     </script>
 @endsection

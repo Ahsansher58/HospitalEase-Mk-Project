@@ -87,7 +87,7 @@
         btnOuter.removeClass("file_uploaded");
     });
 
-    function autocomplete(inp, arr) {
+   {{--  function autocomplete(inp, arr) {
         /*the autocomplete function takes two arguments,
         the text field element and an array of possible autocompleted values:*/
         var currentFocus;
@@ -193,7 +193,7 @@
     var report = ["AB", "x-ray", "CT Scan", "Blood Test"];
 
     /*initiate the autocomplete function on the "myInput" element, and pass along the countries array as possible autocomplete values:*/
-    autocomplete(document.getElementById("myInput"), report);
+    autocomplete(document.getElementById("myInput"), report); --}}
 </script>
 <script>
     // Automatically hide success alert after 5 seconds
