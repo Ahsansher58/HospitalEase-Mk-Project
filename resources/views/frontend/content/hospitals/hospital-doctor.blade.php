@@ -111,31 +111,37 @@
                             </div>
 
                             @if(count($registeredDoctors) > 0)
+                                <h3 class="mt-4 mb-3">Registered Doctors</h3>
                                 <div class="row gy-4">
-                                    <h3 class="mt-4 mb-0">Registered Doctors</h3>
                                     @foreach($registeredDoctors as $data)
                                         <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
                                             <div class="card dr-card rounded-24">
                                                 <div class="position-relative">
-                                                    @if(!empty($list) && file_exists(public_path('uploads/doctors/' . $list->profile_image)))
-
-                                                        <img src="{{ asset('uploads/doctors/' . $list->profile_image) }}" alt="Profile Image" class="card-img-top" alt="...">
+                                                    @if(!empty($data->profile_image) && file_exists(public_path('uploads/doctors/' . $data->profile_image)))
+                                                        <img src="{{ asset('uploads/doctors/' . $data->profile_image) }}" alt="Profile Image" class="card-img-top">
                                                     @else
-                                                        <p>No Profile Image</p>
+                                                        <img src="{{ asset('default-avatar.png') }}" alt="No Profile Image" class="card-img-top">
                                                     @endif
-                                                    <span class="card-chip rounded-6">{{ $data->years_experience }}</span>
+                                                    <span class="card-chip rounded-6">{{ $data->years_experience }} yrs</span>
                                                 </div>
                                                 <div class="card-body text-center">
                                                     <h4 class="card-title">{{ $data->name }}</h4>
-                                                    <p class="card-text mb-3">{{ $data->specialization }}<</p>
-                                                    <a href="#" class="btn btn-outline-info btn-xs rounded-4 font-public-sans"
-                                                        data-bs-toggle="modal" data-bs-target="#editDoctor">View Profile</a>
+                                                    <p class="card-text mb-3">{{ $data->specialization }}</p>
+                                                    <a href="{!! route('doctor-profile' , $data->id) !!}" class="btn btn-outline-info btn-xs rounded-4 font-public-sans">View Profile</a>
+                                                    @if($data->is_approved == 1)
+                                                        <p class="card-text mb-3"> Status : Approved</p>
+                                                    @elseif($data->is_approved == 2)
+                                                        <p class="card-text mb-3"> Status : Pending</p>
+                                                    @elseif($data->is_approved == 0)
+                                                        <p class="card-text mb-3"> Status : Rejected</p>
+                                                    @endif
                                                 </div>
                                             </div>
                                         </div>
                                     @endforeach
                                 </div>
                             @endif
+
                         </div>
                     </div>
                 </div>

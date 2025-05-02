@@ -635,9 +635,11 @@ class HospitalsController extends Controller
     }
     $user               = Auth::user();
     $hospital           = HospitalsProfile::where('hospital_id' ,$user->id)->first();
-        
-    $registeredHospital = HospitalDoctor::where('hospital_id' , $hospital->id)->get();
-    $registeredDoctors  = Doctor::where('user_id' , $user->id)->get();
+    $registeredDoctors  = Doctor::select('doctors.*' , 'hospital_doctors.is_approved')
+    ->leftJoin('hospital_doctors' , 'hospital_doctors.doctor_id' , 'doctors.id')
+    ->where('hospital_doctors.hospital_id' , $hospital->id)
+    ->where('doctors.hospital_id' , $hospital->id)
+    ->get();
         
     return view('frontend.content.hospitals.hospital-doctor', compact('user' , 'registeredDoctors'));
   }

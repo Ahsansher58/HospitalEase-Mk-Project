@@ -252,7 +252,7 @@ class UsersController extends Controller
       'mobile' => 'required|numeric|unique:users,mobile',
       'hospital_name' => 'required|string|max:255',
       'password' => 'required|string|min:8|confirmed',
-      'g-recaptcha-response' => 'required|captcha',
+      // 'g-recaptcha-response' => 'required|captcha',
     ]);
 
     // Create the user
@@ -424,7 +424,7 @@ class UsersController extends Controller
       'lastName'             => 'required|string|max:255',
       'dob'                  => 'required|date',
       'gender'               => 'required|in:male,female,other',
-      'g-recaptcha-response' => 'required|captcha',
+      // 'g-recaptcha-response' => 'required|captcha',
     ]);
 
     try {
