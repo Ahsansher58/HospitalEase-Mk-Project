@@ -3,6 +3,46 @@
 @section('title', 'Hospital Ease - Profile')
 @include('frontend.includes.favicon')
 @section('content')
+<style type="text/css">
+    .autocomplete {
+        position: relative;
+        width: 100%;
+    }
+
+    .autocomplete .searchResult{
+        list-style: none;
+        padding: 0px;
+        width: 78%;
+        position: absolute;
+        margin: 0;
+        margin-top: 40px;
+        background: white;
+        z-index: 5;
+    }
+
+
+    .autocomplete .searchResult li {
+        padding: 8px 15px;
+        color: #333;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+
+    .autocomplete .searchResult li:hover,
+    .autocomplete .searchResult li:focus {
+        background-color: #f5f5f5;
+        color: #262626;
+        text-decoration: none;
+    }
+
+    /* Make sure the dropdown appears above modal */
+    .modal .autocomplete .searchResult {
+        z-index: 9999 !important;
+    }
+</style>
     @include('frontend.includes.after-login-hospitals-header')
 
     <!--MAIN-->
@@ -121,7 +161,7 @@
         <div class="modal-dialog modal-xl modal-dialog-centered">
             <div class="modal-content rounded-24">
                 <div class="modal-header border-0">
-                    <h3 class="modal-title font-regular" id="staticBackdropLabel">Add New Doctors</h3>
+                    <h3 class="modal-title font-regular" id="staticBackdropLabel">Add New Doctor</h3>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body mt-4">
@@ -216,7 +256,7 @@
                                     <div class="mt-5 text-end">
                                         <button class="btn btn-cancel font-size-16 font-regular me-2 "
                                             data-bs-dismiss="modal">Cancel</button>
-                                        <button class="btn btn-info font-regular">Save</button>
+                                        <button class="btn btn-info font-regular" type="button">Save</button>
                                     </div>
                                 </div>
                             </div>
@@ -239,27 +279,37 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body mt-4">
-                    <form id="doctorForm" method="POST" enctype="multipart/form-data">
+                    <form id="doctorForm" method="POST" enctype="multipart/form-data" action="{!! route('link-registered-doctor') !!}">
                         @csrf
                         @method('POST')
                         <div class="row g-3">
-                            <div class="col-lg-9">
-                                <div class="row">
-                                    <div class="col-lg-6">
-                                        <div class="mb-4">
-                                            <label class="mb-2">Search Doctor Email<span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control  form-input-control "
-                                                placeholder="Enter report name">
-                                        </div>
-                                    </div>
-                                    <div class="mt-5 text-end">
-                                        <button class="btn btn-cancel font-size-16 font-regular me-2 "
-                                            data-bs-dismiss="modal">Cancel</button>
-                                        <button class="btn btn-info font-regular">Save</button>
-                                    </div>
+                            <div class="col-lg-6">
+                                <div class="">
+                                    <label class="form-label">Search Doctor Email</label>
+                                    <div class="input-group autocomplete">
+                                        <input type="text" class="form-control form-input-control doctor-select" placeholder="Search Doctor Email" required>
+                                            <input type="hidden" name="doctor_id">
+                                            <ul class="searchResult"></ul> 
+                                    </div> 
+                                </div> 
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="">
+                                    <label class="mb-2">Doctor Name<span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control  form-input-control" id="doctor_name" name="doctor_name" disabled >
                                 </div>
                             </div>
-
+                            <div class="col-lg-6">
+                                <div class="">
+                                    <button type="button" class="btn btn-info doctor-profile-button" disabled>
+                                        <a href="#" class="text-white" style="text-decoration: none;">Doctor Profile</a>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="mt-5 text-end">
+                                <button class="btn btn-cancel font-size-16 font-regular me-2 " data-bs-dismiss="modal">Cancel</button>
+                                <button class="btn btn-info font-regular" type="submit">Link Doctor</button>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -375,6 +425,93 @@
     @include('frontend.includes.hospital-footer')
     <link rel="stylesheet" href="{{ asset('assets/frontend/css/chosen.css') }}" />
     <script src="{{ asset('assets/frontend/js/chosen.jquery.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            // Prevent form submission
+            $('form.hospital-search-placeholder').on('submit', function(e) {
+                e.preventDefault();     
+            });
+
+            // Initialize autocomplete for doctor search
+            $('.doctor-select').autocomplete({
+                source: function(request, response) {
+                    if (request.term.length < 2) {
+                        $('[name="doctor_id"]').val('');
+                        $('.searchResult').empty();
+                        return false;
+                    }
+
+                    $.ajax({
+                        url: "{{ route('search-doctors') }}",
+                        type: 'POST',
+                        dataType: 'json',
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            search_text: request.term,
+                        },
+                        success: function(data) {
+                            if (data.error) {
+                                $('[name="doctor_id"]').val('');
+                                $('.searchResult').empty();
+                                return false;
+                            }
+                            
+                            // Clear previous results
+                            $('.searchResult').empty();
+                            
+                            // Add new results
+                            if (data.result && data.result.length > 0) {
+                                $.each(data.result, function(index, item) {
+                                    $('.searchResult').append(
+                                        $('<li>').attr('data-id', item.id)
+                                        .attr('data-name', item.name)
+                                        .attr('data-email', item.email)
+                                        .text(item.email + ' - ' + item.name)
+                                    );
+                                });
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error(error);
+                            $('.searchResult').empty();
+                        }
+                    });
+                },
+                minLength: 2,
+                open: function() {
+                    // Position the dropdown correctly
+                    $(this).autocomplete('widget').css({
+                        'width': $(this).outerWidth(),
+                        'z-index': 9999
+                    });
+                }
+            });
+
+            // Handle click on search result items
+            $(document).on('click', '.searchResult li', function() {
+                var doctorId    = $(this).data('id');
+                var doctorName  = $(this).data('name');
+                var doctorEmail = $(this).data('email');
+                var profileUrl = `{{ url('hospital/doctor-profile') }}/${doctorId}`;
+
+                
+                $('.doctor-select').val(doctorEmail);
+                $('[name="doctor_id"]').val(doctorId);
+                $('#doctor_name').val(doctorName);
+                $('.doctor-profile-button').prop('disabled',false);
+                $('.doctor-profile-button a').attr('href', profileUrl);
+                $('.searchResult').empty();
+            });
+
+            // Close dropdown when clicking outside
+            $(document).on('click', function(e) {
+                if (!$(e.target).closest('.autocomplete').length) {
+                    $('.searchResult').empty();
+                }
+            });
+        });
+        
+    </script>
     {{-- <script>
         document.addEventListener("DOMContentLoaded", function() {
             const doctorModal = new bootstrap.Modal(document.getElementById("doctorModal"));

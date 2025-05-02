@@ -11,6 +11,7 @@ use App\Models\HospitalsProfile;
 use App\Models\MainCategory;
 use App\Models\Setting;
 use App\Models\SubCategory;
+use App\Models\Doctor;
 use App\Models\User;
 use Carbon\Carbon;
 use Exception;
@@ -678,6 +679,52 @@ class HospitalsController extends Controller
     }
 
     return response()->json(['success' => false, 'message' => 'File not found']);
+  }
+
+  public function searchDoctors(Request $request)
+  {
+    if ($request->ajax()) {
+        $term     = $request->input('search_text');
+
+        $query = Doctor::query();
+
+        if (!empty($term)) {
+          $query->where('email', 'LIKE', '%' . $term . '%');
+        }
+
+        $results = $query->limit(10)->get();
+
+        return response()->json([
+            'result' => $results->map(function ($doctor) {
+              return [
+                  'id'    => $doctor->id,
+                  'name'  => $doctor->name,
+                  'email' => $doctor->email,
+              ];
+            }),
+        ]);
+    }
+
+    // Optional fallback in case request is not AJAX
+    return response()->json(['error' => 'Invalid request'], 400);
+  }
+
+  public function linkRegisteredDoctor(Request $request)
+  {
+    echo "<pre>";
+    print_r($request->all());
+    echo "</pre>";
+    die();
+
+  }
+
+  public function doctorProfile(Request $request, $id)
+  {
+    echo "<pre>";
+    print_r($id);
+    echo "</pre>";
+    die();
+
   }
 
   public function hospitalProfileUpdate(Request $request)

@@ -419,6 +419,9 @@ Route::prefix('hospital')->group(function () {
     Route::post('doctor/store', [DoctorController::class, 'store'])->name('hospital.doctor.store');
     Route::post('/upload-image', [HospitalsController::class, 'uploadImageCase8'])->name('hospital.uploadImageCase8');
     Route::post('/delet-image', [HospitalsController::class, 'deleteImageCase8'])->name('hospital.deleteImageCase8');
+    Route::post('/search-doctors', [HospitalsController::class, 'searchDoctors'])->name('search-doctors');
+    Route::post('/link-registered-doctor', [HospitalsController::class, 'linkRegisteredDoctor'])->name('link-registered-doctor');
+    Route::get('/doctor-profile/{id}', [HospitalsController::class, 'doctorProfile'])->name('doctor-profile');
   });
 });
 
