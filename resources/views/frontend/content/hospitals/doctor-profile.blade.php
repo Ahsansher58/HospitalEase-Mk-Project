@@ -215,8 +215,8 @@
                                         </div>
                                     @endforeach
                                 @else
-                                    <div class="col-lg-6">
-                                        <div class="mb-3">
+                                    <div class="col-lg-12">
+                                        <div class="mb-3 text-center text-muted">
                                             <p>No Awards and Achievements</p>
                                         </div>
                                     </div>
@@ -254,8 +254,8 @@
                                         </div>
                                     @endforeach
                                 @else
-                                    <div class="col-lg-6">
-                                        <div class="mb-3">
+                                    <div class="col-lg-12">
+                                        <div class="mb-3 text-center text-muted">
                                             <p>No Educational & Qualifications</p>
                                         </div>
                                     </div>
