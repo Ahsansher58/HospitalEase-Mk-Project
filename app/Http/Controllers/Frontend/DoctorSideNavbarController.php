@@ -275,7 +275,7 @@ class DoctorSideNavbarController extends Controller
       'college_name'               => 'required|string|max:255',
       'year_studied'               => 'required|numeric',
       'degree'                     => 'required|string|max:255',
-      'qualification_certificate'  => 'nullable|string|max:255',
+      'qualification_certificate'  => 'nullable',
       'show_certificate_in_public' => 'nullable',
     ]);
 
@@ -302,27 +302,25 @@ class DoctorSideNavbarController extends Controller
       'college_name'               => 'required|string|max:255',
       'year_studied'               => 'required|numeric',
       'degree'                     => 'required|string|max:255',
-      'qualification_certificate'  => 'nullable|string|max:255',
-      'show_certificate_in_public' => 'nullable',
+      'qualification_certificate'  => 'required',
+      'show_certificate_in_public' => 'required',
     ]);
 
-    $user   = Auth::user();
-    $doctor = Doctor::where('user_id', $user->id)->first();
-
-
+    $user      = Auth::user();
+    $doctor    = Doctor::where('user_id', $user->id)->first();
     $imageName = null;
 
-      if ($request->hasFile('qualification_certificate')) {
-          $image     = $request->file('qualification_certificate');
-          $imageName = time() . '.' . $image->getClientOriginalExtension(); 
+    if ($request->hasFile('qualification_certificate')) {
+      $image     = $request->file('qualification_certificate');
+      $imageName = time() . '.' . $image->getClientOriginalExtension(); 
 
-          if (!file_exists(public_path('uploads/doctors'))) {
-              mkdir(public_path('uploads/doctors'), 0777, true);
-          }
-
-          $image->move(public_path('uploads/doctors'), $imageName); 
+      if (!file_exists(public_path('uploads/doctors'))) {
+          mkdir(public_path('uploads/doctors'), 0777, true);
       }
 
+      $image->move(public_path('uploads/doctors'), $imageName); 
+    }
+    
     DoctorEducationalQualification::create([
       'doctor_id'                  => $doctor->id,
       'college_name'               => $request->college_name,

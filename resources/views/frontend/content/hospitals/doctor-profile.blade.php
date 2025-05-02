@@ -48,100 +48,254 @@
     <!--MAIN-->
     <main class="inner-page">
 
-        <section class="pb-5 pt-lg-5 pt-3">
-            <div class="container layout-container">
-                <h3 class="text-lg-start text-end mt-2">JV Hospital</h3>
-                <div class="d-flex">
-                    <!--SIDE TAB-->
-                    @include('frontend.includes.hospital-side-navbar')
-                    <!--SIDE TAB-->
-                    <div class="contnet-wrapper">
+        <section class="pb-5">
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-xl-3">
+                        <!--SIDE TAB-->
+                        @include('frontend.includes.hospital-side-navbar')
+                        <!--SIDE TAB-->
+                    </div>
+
+                    <div class="col-xl-9">
                         <div class="hospital-list-block my-favourite-hospital frame">
-                            <div class="d-sm-flex justify-content-between align-items-center mb-3">
-                                <h3 class="mb-0">Doctors</h3>
-                                <form autocomplete="off" class="hospital-search-placeholder">
-                                    <div class="d-flex my-4 my-sm-0 align-items-center">
-                                        <div class="autocomplete">
-                                            <input type="text" id="doctorInput" name="doctor"
-                                                class="form-control form-input-control search-control input-md"
-                                                placeholder="Search">
-                                        </div>
-                                        <button class="btn btn-info btn-md ms-3" data-bs-toggle="modal"
-                                            data-bs-target="#addDoctor"><img
-                                                src="{{ asset('assets/frontend/images/icons/plus-icon.svg') }}"
-                                                class="d-md-none" height="16" /> <span class="d-none d-md-block">Add New
-                                                Doctor</span>
-                                        </button>
-                                        <button class="btn btn-info btn-md ms-3" data-bs-toggle="modal"
-                                            data-bs-target="#linkRegisteredDoctor"><span class="d-none d-md-block">Link Registered Doctor</span>
-                                        </button>
-                                    </div>
-                                </form>
+                            <div class="d-sm-flex align-items-start align-items-sm-center justify-content-between mb-5">
+                                <h3 class="font-medium mb-0">Doctor's Profile</h3>
+                                <div class="text-end justify-content-between d-flex mt-4 mt-sm-0">
+                                    <a href="{{ route('hospital.doctor') }}" class="btn btn-info rounded-50">
+                                        <img src="images/icons/edit-2.svg" alt="" class="me-0 me-md-2" /><span class="d-none d-md-inline-flex">Back</span>
+                                    </a>
+                                </div>
                             </div>
+                            <div class="row">
+                                @if (session('success'))
+                                    <div class="alert alert-success">
+                                        {{ session('success') }}
+                                    </div>
+                                @endif
 
-
-                            <div class="row gy-4 mb-5">
-                                <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
-                                    <div class="card dr-card rounded-24">
+                                @if ($errors->any())
+                                    <div class="alert alert-danger">
+                                        <ul>
+                                            @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endif
+                                <h3 class="mt-3 text-center">Personal Details</h3>
+                                <div class="col-lg-6">
+                                    <div class="mb-3">
+                                        <label class="mb-2">Name</label>
+                                        <input type="text" class="form-control form-input-control"
+                                            placeholder="{{ $doctor->name }}" disabled>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="mb-3">
+                                        <label class="mb-2">Email</label>
+                                        <input type="email" class="form-control form-input-control"
+                                            value="{{ $doctor->email }}" disabled>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="mb-3">
+                                        <label class="mb-2">Phone</label>
                                         <div class="position-relative">
-                                            <img src="{{ asset('assets/frontend/images/dr-img-1.png') }}"
-                                                class="card-img-top" alt="...">
-                                            <span class="card-chip rounded-6">15+ Years</span>
-                                        </div>
-                                        <div class="card-body text-center">
-                                            <h4 class="card-title">Dr. Meera Patil</h4>
-                                            <p class="card-text mb-3">Gynecology</p>
-                                            <a href="#" class="btn btn-outline-info btn-xs rounded-4 font-public-sans"
-                                                data-bs-toggle="modal" data-bs-target="#editDoctor">Edit Profile</a>
+                                            <input type="text" class="form-control form-input-control phone-input"
+                                                value="{{ $doctor->phone }}" disabled>
+                                            <span class="country-code position-absolute">+91 |</span>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
-                                    <div class="card dr-card rounded-24 add-dr-card">
-                                        <div class="text-center">
-                                            <img src="{{ asset('assets/frontend/images/icons/stethoscope-black.svg') }}"
-                                                class="card-img-top mb-4" alt="...">
-                                            <h4 class="card-title mb-3 text-black">Add more doctors</h4>
-                                            <a href="#"
-                                                class="btn btn-outline-secondary btn-xs rounded-4 font-public-sans"
-                                                data-bs-toggle="modal" data-bs-target="#addDoctor">Add Doctor</a>
-                                        </div>
+                                <div class="col-lg-6">
+                                    <div class="mb-3">
+                                        <label class="mb-2">Specialization</label>
+                                        <input type="text" class="form-control form-input-control"
+                                            value="{{ $doctor->specialization }}" disabled>
                                     </div>
+                                </div>
+
+                             <div class="col-lg-6">
+                                    <div class="mb-3">
+                                        <label class="mb-2">Years of Experience</label>
+                                        <input type="number" class="form-control form-input-control"
+                                            value="{{ $doctor->years_experience }}" disabled>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <div class="mb-3">
+                                        <label class="mb-2">IMA Registration Number</label>
+                                        <input type="text" class="form-control form-input-control" value="{{ $doctor->ima_registration_number }}" disabled>
+                                    </div>
+                                </div>
+                             <div class="col-lg-6">
+                                <div class="mb-3">
+                                    <label class="mb-2">Country</label>
+                                    <input type="text" class="form-control form-input-control" value="{{ $doctor->country }}" disabled>
                                 </div>
                             </div>
+                                <div class="col-lg-6">
+                                    <div class="mb-3">
+                                        <label class="mb-2">State</label>
+                                        <input type="text" class="form-control form-input-control" value="{{ $doctor->state }}" disabled>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="mb-3">
+                                        <label class="mb-2">City</label>
+                                        <input type="text" class="form-control form-input-control" value="{{ $doctor->city }}" disabled>
+                                    </div>
+                                </div> 
+                                <div class="col-lg-6">
+                                    <div class="mb-3">
+                                        <label class="mb-2">Locality</label>
+                                        <input type="text" class="form-control form-input-control"
+                                            placeholder="{{ $doctor->locality }}" disabled>
+                                    </div>
+                                </div>
 
-                            @if(count($registeredDoctors) > 0)
-                                <div class="row gy-4">
-                                    <h3 class="mt-4 mb-0">Registered Doctors</h3>
-                                    @foreach($registeredDoctors as $data)
-                                        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
-                                            <div class="card dr-card rounded-24">
-                                                <div class="position-relative">
-                                                    @if(!empty($list) && file_exists(public_path('uploads/doctors/' . $list->profile_image)))
+                                <h3 class="mt-3 text-center">Clinic Details</h3>
+                                <div class="col-lg-6">
+                                    <div class="mb-3">
+                                        <label class="mb-2">Clinic Name</label>
+                                        <input type="text" class="form-control form-input-control"
+                                            placeholder="{{ $doctor->clinic_name }}" disabled>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="mb-3">
+                                        <label class="mb-2">Clinic Address 1</label>
+                                        <input type="text" class="form-control form-input-control"
+                                            placeholder="{{ $doctor->clinic_address1 }}" disabled>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="mb-3">
+                                        <label class="mb-2">Clinic Address 2</label>
+                                        <input type="text" class="form-control form-input-control"
+                                            placeholder="{{ $doctor->clinic_address2 }}" disabled>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="mb-3">
+                                        <label class="mb-2">Clinic Phone</label>
+                                        <input type="text" class="form-control form-input-control"
+                                            placeholder="{{ $doctor->clinic_phone }}" disabled>
+                                    </div>
+                                </div>
 
-                                                        <img src="{{ asset('uploads/doctors/' . $list->profile_image) }}" alt="Profile Image" class="card-img-top" alt="...">
-                                                    @else
-                                                        <p>No Profile Image</p>
-                                                    @endif
-                                                    <span class="card-chip rounded-6">{{ $data->years_experience }}</span>
-                                                </div>
-                                                <div class="card-body text-center">
-                                                    <h4 class="card-title">{{ $data->name }}</h4>
-                                                    <p class="card-text mb-3">{{ $data->specialization }}<</p>
-                                                    <a href="#" class="btn btn-outline-info btn-xs rounded-4 font-public-sans"
-                                                        data-bs-toggle="modal" data-bs-target="#editDoctor">View Profile</a>
-                                                </div>
+
+                                <h3 class="mt-3 text-center">Awards & Achievements</h3>
+
+                                @if(count($doctorAwardsAndAchievements) > 0)
+                                    @foreach($doctorAwardsAndAchievements as $key => $award)
+                                        <div class="col-lg-12">
+                                            <h3 class="mb-2">Award {{ $key + 1}} :</h3>
+                                            <div class="mb-3">
+                                            <label class="mb-2">Award Name</label>
+                                                <input type="text" class="form-control form-input-control" value="{{ $award->award_name }}" disabled>
                                             </div>
+                                            <div class="mb-3">
+                                            <label class="mb-2">Awarded Year</label>
+                                                <input type="text" class="form-control form-input-control" value="{{ $award->awarded_year }}" disabled>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="mb-2">Award Certificate</label>
+                                                <br>
+                                                @if(!empty($award) && file_exists(public_path('uploads/doctors/' . $award->award_certificate)))
+                                                    <img src="{{ asset('uploads/doctors/' . $award->award_certificate) }}" alt="Award Certificate" style="max-width: 100px;max-height: 100px;">
+                                                @else
+                                                    <p>No Award Certificate Image</p>
+                                                @endif
+                                            </div>
+
                                         </div>
                                     @endforeach
-                                </div>
-                            @endif
+                                @else
+                                    <div class="col-lg-6">
+                                        <div class="mb-3">
+                                            <p>No Awards and Achievements</p>
+                                        </div>
+                                    </div>
+                                @endif
+
+                                <h3 class="mt-3 text-center">Educational & Qualifications</h3>
+
+                                @if(count($doctorEducationalQualifications) > 0)
+                                    @foreach($doctorEducationalQualifications as $key => $list)
+                                        <div class="col-lg-12">
+                                            <h3 class="mb-2">Qualification {{ $key + 1}} :</h3>
+                                            <div class="mb-3">
+                                                <label class="mb-2">College Name</label>
+                                                <input type="text" class="form-control form-input-control" value="{{ $list->college_name }}" disabled>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="mb-2">Year Studied</label>
+                                                <input type="text" class="form-control form-input-control" value="{{ $list->year_studied }}" disabled>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="mb-2">Degree</label>
+                                                <input type="text" class="form-control form-input-control" value="{{ $list->degree }}" disabled>
+                                            </div>
+                                            @if($list->show_certificate_in_public === 1)
+                                                <div class="mb-3">
+                                                    <label class="mb-2">Qualification Certificate</label>
+                                                    <br>
+                                                    @if(!empty($list) && file_exists(public_path('uploads/doctors/' . $list->qualification_certificate)))
+                                                        <img src="{{ asset('uploads/doctors/' . $list->qualification_certificate) }}" alt="Qualification Certificate" style="max-width: 100px;max-height: 100px;">
+                                                    @else
+                                                        <p>No Qualification Certificate Image</p>
+                                                    @endif
+                                                </div>
+                                            @endif
+                                        </div>
+                                    @endforeach
+                                @else
+                                    <div class="col-lg-6">
+                                        <div class="mb-3">
+                                            <p>No Educational & Qualifications</p>
+                                        </div>
+                                    </div>
+                                @endif
+
+                                <h3 class="mt-3 text-center">Appointments</h3>
+
+                                @if(count($doctorAppointments) > 0)
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered text-center">
+                                            <thead class="thead-dark">
+                                                <tr>
+                                                    <th>Day</th>
+                                                    <th>Timings</th>
+                                                    <th>Hospital</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach($doctorAppointments as $appointment)
+                                                    <tr>
+                                                        <td>{{ $appointment->day }}</td>
+                                                        <td>{{ $appointment->from_time }} - {{ $appointment->to_time }}</td>
+                                                        <td>{{ $appointment->hospital_name }}</td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                @else
+                                    <div class="text-center mt-3">
+                                        <p class="text-muted">No Appointments</p>
+                                    </div>
+                                @endif
+
                         </div>
                     </div>
                 </div>
+
             </div>
         </section>
-
 
     </main>
     <!--/MAIN-->
@@ -280,7 +434,6 @@
                                     <div class="input-group autocomplete">
                                         <input type="text" class="form-control form-input-control doctor-select" placeholder="Search Doctor Email" required>
                                             <input type="hidden" name="doctor_id">
-                                            <input type="hidden" value="{!! $user->id !!}" name="hospital_id">
                                             <ul class="searchResult"></ul> 
                                     </div> 
                                 </div> 

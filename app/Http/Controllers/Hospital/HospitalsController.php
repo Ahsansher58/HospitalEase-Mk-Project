@@ -8,7 +8,11 @@ use App\Models\FavoriteHospital;
 use App\Models\HospitalAppointment;
 use App\Models\HospitalReview;
 use App\Models\HospitalsProfile;
+use App\Models\DoctorAwardAchievement;
+use App\Models\DoctorEducationalQualification;
+use App\Models\DoctorAppointment;
 use App\Models\MainCategory;
+use App\Models\HospitalDoctor;
 use App\Models\Setting;
 use App\Models\SubCategory;
 use App\Models\Doctor;
@@ -20,6 +24,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use App\Mail\SendOtpMail;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\LinkRegisteredDoctorConfirmationMail;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 
 class HospitalsController extends Controller
 {
@@ -624,8 +633,13 @@ class HospitalsController extends Controller
     if (!Auth::check()) {
       return redirect('/');
     }
-    $user = Auth::user();
-    return view('frontend.content.hospitals.hospital-doctor', compact('user'));
+    $user               = Auth::user();
+    $hospital           = HospitalsProfile::where('hospital_id' ,$user->id)->first();
+        
+    $registeredHospital = HospitalDoctor::where('hospital_id' , $hospital->id)->get();
+    $registeredDoctors  = Doctor::where('user_id' , $user->id)->get();
+        
+    return view('frontend.content.hospitals.hospital-doctor', compact('user' , 'registeredDoctors'));
   }
   public function addHospitalDoctor()
   {
@@ -711,20 +725,68 @@ class HospitalsController extends Controller
 
   public function linkRegisteredDoctor(Request $request)
   {
-    echo "<pre>";
-    print_r($request->all());
-    echo "</pre>";
-    die();
+
+    $data = [
+      'doctor_id'   => $request->doctor_id,
+      'hospital_id' => $request->hospital_id,
+      'is_approved' => 0
+    ];
+
+    HospitalDoctor::create($data);
+
+    $doctor   = Doctor::find($request->doctor_id);
+    $hospital = HospitalsProfile::where('hospital_id',$request->hospital_id)->first();
+
+    // Send password to the user's email
+    Mail::to($doctor->email)->send(new LinkRegisteredDoctorConfirmationMail($doctor,$hospital));
+
+    return redirect()->back()->with('success', 'Email successfully send to Doctor.');
 
   }
 
   public function doctorProfile(Request $request, $id)
   {
-    echo "<pre>";
-    print_r($id);
-    echo "</pre>";
-    die();
+    $doctor = Doctor::select(
+      'doctors.*',
+      'doctor_award_achievements.award_name',
+      'doctor_award_achievements.awarded_year',
+      'doctor_educational_qualifications.college_name',
+      'doctor_educational_qualifications.year_studied',
+      'doctor_educational_qualifications.degree',
+      'doctor_educational_qualifications.qualification_certificate',
+      'doctor_educational_qualifications.show_certificate_in_public',
+      )
+    ->leftJoin('doctor_award_achievements' , 'doctor_award_achievements.doctor_id' , 'doctors.id')
+    ->leftJoin('doctor_educational_qualifications','doctor_educational_qualifications.doctor_id' ,'doctors.id')
+    ->where('doctors.id' , $id)
+    ->first();
 
+    $user                            = Auth::user();
+    $doctorAwardsAndAchievements     = DoctorAwardAchievement::where('doctor_id' , $id)->get();
+    $doctorEducationalQualifications = DoctorEducationalQualification::where('doctor_id' , $id)->get();
+      
+        
+    $doctorAppointments = DoctorAppointment::select(
+      'doctor_appointments.*' ,
+      'doctors.user_id' ,
+      'user_profile.address',
+      'hospitals_profile.hospital_name',
+    )
+    ->leftJoin('hospitals_profile','hospitals_profile.id' , 'doctor_appointments.hospital_id')
+    ->leftJoin('users' , 'users.id' , 'hospitals_profile.hospital_id')
+    ->leftJoin('user_profile' , 'users.id' , 'user_profile.user_id')
+    ->leftJoin('doctors' , 'doctors.id' , 'doctor_appointments.doctor_id')
+    ->where('doctors.id' , $id)
+    ->orderBy('doctor_appointments.id', 'asc')
+    ->get();  
+        
+    return view('frontend.content.hospitals.doctor-profile', compact(
+      'doctor',
+      'user',
+      'doctorAwardsAndAchievements',
+      'doctorEducationalQualifications',
+      'doctorAppointments',
+    ));
   }
 
   public function hospitalProfileUpdate(Request $request)
@@ -878,6 +940,19 @@ class HospitalsController extends Controller
     $hospitalId = $user->id;
     $hospital = HospitalsProfile::where('hospital_id', $hospitalId)->first();
     return view('frontend.content.hospitals.hospital-setting', compact('user', 'hospital'));
+  }
+
+  public function linkRegisteredDoctorConfirmation($is_approved , $doctor_id, $hospital_id)
+  {
+    $hospitalDoctor  = HospitalDoctor::where('doctor_id' , $doctor_id)->first();
+    $hospitalDoctor->update(['is_approved' => $is_approved , 'hospital_id' => $hospital_id]);
+
+
+    $doctor = Doctor::where('id' , $doctor_id)->first();
+    $doctor->update(['hospital_id' => $hospital_id]);
+
+    return redirect()->route('home')->with('success', 'Confirmation successfully updated.');;
+
   }
 
   /*update locality */

@@ -189,7 +189,7 @@
                                         <div class="mb-3">
                                             <label class="mb-2">Upload Certificate</label>
                                             <input type="file" class="form-control form-input-control"
-                                            placeholder="" name="award_certificate" required>
+                                            placeholder="" name="qualification_certificate" required>
                                         </div>
                                         <div class="invalid-feedback">
                                             Please Upload Certificate

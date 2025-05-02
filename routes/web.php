@@ -422,6 +422,7 @@ Route::prefix('hospital')->group(function () {
     Route::post('/search-doctors', [HospitalsController::class, 'searchDoctors'])->name('search-doctors');
     Route::post('/link-registered-doctor', [HospitalsController::class, 'linkRegisteredDoctor'])->name('link-registered-doctor');
     Route::get('/doctor-profile/{id}', [HospitalsController::class, 'doctorProfile'])->name('doctor-profile');
+    Route::get('/link-registered-doctor-confirmation/{is_approved}/{doctor_id}/{hospital_id}', [HospitalsController::class, 'linkRegisteredDoctorConfirmation'])->name('hospital.link-registered-doctor-confirmation');
   });
 });
 
