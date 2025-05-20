@@ -62,17 +62,17 @@
                                 @endif
                                 @if(count($doctorAchievement) > 0)
                                     @foreach($doctorAchievement as $list )
-                                        <div class="row">
-                                            <div class="col-lg-3">
+                                        <div class="row mb-3 align-items-end pb-3">
+                                            <div class="col-md-3">
                                                 <div class="mb-3">
-                                                    <label class="mb-2">Award Name</label>
+                                                    <label class="form-label">Award Name</label>
                                                     <input type="text" class="form-control form-input-control"
                                                         placeholder="{{ $list->award_name ?? 'N/A' }}" disabled>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-3">
+                                            <div class="col-md-3">
                                                 <div class="mb-3">
-                                                    <label class="mb-2">Awarded Year</label>
+                                                    <label class="form-label">Awarded Year</label>
                                                     <input type="number" class="form-control form-input-control"
                                                         placeholder="{{ $list->awarded_year ?? 'N/A' }}" disabled>
                                                 </div>
@@ -81,14 +81,14 @@
                                                 @php
                                                     $imageUrl  = asset('uploads/doctors/' . $list->award_certificate);
                                                 @endphp
-                                                <div class="col-lg-3 text-center">
-                                                    <label class="mb-2">Award Certificate</label>
+                                                <div class="col-md-3 text-center">
+                                                    <label class="form-label">Award Certificate</label>
                                                     <div class="mb-3">
                                                         <img src="{{ $imageUrl }}" alt="Award Certificate" style="max-width: 40%; height: 40%;">
                                                     </div>
                                                 </div>
                                             @endif
-                                            <div class="col-lg-3 d-flex align-items-center">
+                                            <div class="col-md-3 d-flex gap-2">
                                                 <div class="mb-3">
                                                     <a href="{{ route('doctor.editAwardAchievements' ,$list->id ) }}" class="btn btn-info text-center btn-sm">
                                                         <img src="images/icons/edit-2.svg" alt="" class="me-0 me-md-2" /><span class="d-none d-md-inline-flex">Edit</span>
@@ -132,7 +132,7 @@
                         @csrf
                         @method('POST')
                         <div class="row gy-3">
-                            <div class="col-lg-6">
+                            <div class="col-lg-12">
                                 <div class="mb-3">
                                     <label class="mb-2">Award Name</label>
                                     <input type="text" class="form-control form-input-control" name="award_name"
@@ -143,7 +143,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-lg-6">
+                            <div class="col-lg-12">
                                 <div class="mb-3">
                                     <label for="awarded_year" class="mb-2">Awarded Year</label>
                                     <input type="number" class="form-control form-input-control" name="awarded_year"

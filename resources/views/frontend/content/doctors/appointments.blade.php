@@ -152,19 +152,7 @@
                         @csrf
                         <div class="row gy-3">
                             <!-- Day -->
-                            <div class="col-md-6 mt-2 mb-2">
-                                <label class="form-label" for="formValidationPlacement">Day</label>
-                                <select id="" name="day" class="form-select">
-                                    <option value="">Select Day</option>
-                                        <option value="Monday">Monday</option>
-                                        <option value="Tuesday">Tuesday</option>
-                                        <option value="Wednesday">Wednesday</option>
-                                        <option value="Thursday">Thursday</option>
-                                        <option value="Friday">Friday</option>
-                                        <option value="Saturday">Saturday</option>
-                                        <option value="Sunday">Sunday</option>
-                                </select>
-                            </div>
+                            
                             <div class="col-lg-6">
                                 <div class="mb-4">
                                     <label for="country" class="mb-2">Country</label>
@@ -238,6 +226,19 @@
                                     </div> 
                                 </div> 
                             </div>
+                            <div class="col-md-6 mt-2 mb-2">
+                                <label class="form-label" for="formValidationPlacement">Day</label>
+                                <select id="" name="day" class="form-select">
+                                    <option value="">Select Day</option>
+                                        <option value="Monday">Monday</option>
+                                        <option value="Tuesday">Tuesday</option>
+                                        <option value="Wednesday">Wednesday</option>
+                                        <option value="Thursday">Thursday</option>
+                                        <option value="Friday">Friday</option>
+                                        <option value="Saturday">Saturday</option>
+                                        <option value="Sunday">Sunday</option>
+                                </select>
+                            </div>
                             <div class="col-lg-12">
                                 <label class="mb-2"> From Time<span class="text-danger">*</span></label>
                                 <input type="time" class="form-control form-input-control" name="from_time" placeholder="Enter From Time" required>
@@ -271,20 +272,6 @@
                     <form id="editForm">
                         <input type="hidden" id="appointment_id" name="appointment_id">
                         @csrf
-                        <div class="row gy-3">
-                            <div class="col-md-6 mt-2 mb-2">
-                                <label class="form-label" for="day">Day</label>
-                                <select id="day" name="day" class="form-select">
-                                    <option value="">Select Day</option>
-                                        <option value="Monday">Monday</option>
-                                        <option value="Tuesday">Tuesday</option>
-                                        <option value="Wednesday">Wednesday</option>
-                                        <option value="Thursday">Thursday</option>
-                                        <option value="Friday">Friday</option>
-                                        <option value="Saturday">Saturday</option>
-                                        <option value="Sunday">Sunday</option>
-                                </select>
-                            </div>
                             <div class="col-lg-6">
                                 <div class="mb-4">
                                     <label for="country" class="mb-2">Country</label>
@@ -357,6 +344,20 @@
                                             <ul class="searchResult"></ul> 
                                     </div> 
                                 </div> 
+                            </div>
+                            <div class="row gy-3">
+                            <div class="col-md-6 mt-2 mb-2">
+                                <label class="form-label" for="day">Day</label>
+                                <select id="day" name="day" class="form-select">
+                                    <option value="">Select Day</option>
+                                        <option value="Monday">Monday</option>
+                                        <option value="Tuesday">Tuesday</option>
+                                        <option value="Wednesday">Wednesday</option>
+                                        <option value="Thursday">Thursday</option>
+                                        <option value="Friday">Friday</option>
+                                        <option value="Saturday">Saturday</option>
+                                        <option value="Sunday">Sunday</option>
+                                </select>
                             </div>
                             <div class="col-lg-12">
                                 <label class="mb-2"> From Time<span class="text-danger">*</span></label>

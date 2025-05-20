@@ -23,34 +23,7 @@
                     <div class="col-xl-9">
                         <div class="hospital-list-block my-favourite-hospital frame">
                             <h3 class="font-medium">Social Media</h3>
-                            <form autocomplete="off">
-                                <div class="row mb-4 g-2 align-items-center">
-                                    <div class="col-md-4">
-                                        <div class="autocomplete">
-                                            <div class="search-widget bg-light border">
-                                                <div class="input-group">
-                                                    <input type="text" class="form-control" placeholder="Search Name"
-                                                        id="searchSocialMediaName">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="search-widget search-symptoms bg-light border">
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" id="searchSocialMediaIcon"
-                                                    placeholder="Search Icon">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2"><a href="javascript:void()"
-                                            class="btn btn-info btn-md rounded-50 w-100" data-bs-toggle="modal"
-                                            data-bs-target="#social_media_modal"><img
-                                                src="{{ asset('assets/frontend/images/icons/plus-icon.svg') }}"
-                                                class="img-fluid me-0 me-sm-2" /><span
-                                                class="d-none d-sm-inline-flex">Add</span></a></div>
-                                </div>
-                            </form>
+
                             <div id='show_messages'>
                                 @if (session('success'))
                                     <div class="alert alert-success">
@@ -68,21 +41,47 @@
                                     </div>
                                 @endif
                             </div>
-                            <div class="table-responsive social-media-table">
-                                <table id="socialMedia" class="table mb-0 social-media-table">
-                                    <thead>
-                                        <tr>
-                                            <th>Sno </th>
-                                            <th>Youtube Link </th>
-                                            <th>Facebook Link </th>
-                                            <th>linkdin Link </th>
-                                            <th>Instagram Link </th>
-                                            <th>Action </th>
-                                        </tr>
-                                    </thead>
-                                </table>
-                            </div>
+                            <form id="socialMediaForm" method="POST" action="{{ route('doctor.social-media-store') }}">
+                                @csrf
+                                <div class="row gy-3">
+                                    <div class="col-lg-12">
+                                        <label class="mb-2"> Youtube Link<span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control form-input-control" name="youtube_link"
+                                            placeholder="Enter Youtube Link" value="{{ $social_media->youtube_link ?? '' }}">
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <label class="mb-2"> Facebook Link<span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control form-input-control" name="facebook_link"
+                                            placeholder="Enter Facebook Link" value="{{ $social_media->facebook_link ?? '' }}">
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <label class="mb-2"> Linkedin Link<span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control form-input-control" name="linkdin_link"
+                                            placeholder="Enter Linkedin Link" value="{{ $social_media->linkdin_link ?? '' }}">
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <label class="mb-2"> Instagram Link<span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control form-input-control" name="instagram_link"
+                                            placeholder="Enter Instagram Link" value="{{ $social_media->instagram_link ?? '' }}">
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <label class="mb-2"> Whatsapp Link<span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control form-input-control" name="whatsapp_link"
+                                            placeholder="Enter Whatsapp Link" value="{{ $social_media->whatsapp_link ?? '' }}">
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <label class="mb-2"> Telegram Link<span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control form-input-control" name="telegram_link"
+                                            placeholder="Enter Telegram Link" value="{{ $social_media->telegram_link ?? '' }}">
+                                    </div>
+                                </div>
 
+                                <div class="my-5">
+                                    <button type="submit" class="btn btn-info me-2 font-regular">Update</button>
+                                    <button type="button" class="btn btn-cancel font-size-16 font-regular"
+                                        data-bs-dismiss="modal">Cancel</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -94,97 +93,8 @@
     </main>
     <!--/MAIN-->
     @include('frontend.includes.user-footer')
-    <!-- Modal -->
-    <div class="modal fade" id="social_media_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-m modal-dialog-centered">
-            <div class="modal-content rounded-24">
-                <div class="modal-header border-0">
-                    <h3 class="modal-title font-regular" id="staticBackdropLabel">Social Media</h3>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body mt-4">
-                    <form id="socialMediaForm" method="POST" action="{{ route('doctor.social-media-store') }}">
-                        @csrf
-                        <div class="row gy-3">
-                            <div class="col-lg-12">
-                                <label class="mb-2"> Youtube Link<span class="text-danger">*</span></label>
-                                <input type="text" class="form-control form-input-control" name="youtube_link"
-                                    placeholder="Enter Youtube Link" required>
-                            </div>
-                            <div class="col-lg-12">
-                                <label class="mb-2"> Facebook Link<span class="text-danger">*</span></label>
-                                <input type="text" class="form-control form-input-control" name="facebook_link"
-                                    placeholder="Enter Facebook Link" required>
-                            </div>
-                            <div class="col-lg-12">
-                                <label class="mb-2"> Linkdin Link<span class="text-danger">*</span></label>
-                                <input type="text" class="form-control form-input-control" name="linkdin_link"
-                                    placeholder="Enter Linkdin Link" required>
-                            </div>
-                            <div class="col-lg-12">
-                                <label class="mb-2"> Instagram Link<span class="text-danger">*</span></label>
-                                <input type="text" class="form-control form-input-control" name="instagram_link"
-                                    placeholder="Enter Instagram Link" required>
-                            </div>
-                        </div>
 
-                        <div class="my-5">
-                            <button type="submit" class="btn btn-info me-2 font-regular">Add</button>
-                            <button type="button" class="btn btn-cancel font-size-16 font-regular"
-                                data-bs-dismiss="modal">Cancel</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Edit Modal -->
-    <div class="modal fade" id="editModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="editModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-m modal-dialog-centered">
-            <div class="modal-content rounded-24">
-                <div class="modal-header border-0">
-                    <h3 class="modal-title font-regular" id="staticBackdropLabel">Edit Social Media</h3>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body mt-4">
-                    <form id="editForm">
-                        <input type="hidden" id="social_media_id" name="social_media_id">
-                        @csrf
-                        <div class="row gy-3">
-                            <div class="col-lg-12">
-                                <label class="mb-2">Youtube Link<span class="text-danger">*</span></label>
-                                <input type="text" class="form-control form-input-control" id="youtube_link"
-                                    name="youtube_link" required>
-                            </div>
-                            <div class="col-lg-12">
-                                <label class="mb-2">Facebook Link<span class="text-danger">*</span></label>
-                                <input type="text" class="form-control form-input-control" id="facebook_link"
-                                    name="facebook_link" required>
-                            </div>
-                            <div class="col-lg-12">
-                                <label class="mb-2">Linkdin Link<span class="text-danger">*</span></label>
-                                <input type="text" class="form-control form-input-control" id="linkdin_link"
-                                    name="linkdin_link" required>
-                            </div>
-                            <div class="col-lg-12">
-                                <label class="mb-2">Instagram Link<span class="text-danger">*</span></label>
-                                <input type="text" class="form-control form-input-control" id="instagram_link"
-                                    name="instagram_link" required>
-                            </div>
-                        </div>
 
-                        <div class="my-5">
-                            <button type="submit" class="btn btn-info me-2 font-regular">Update</button>
-                            <button type="button" class="btn btn-cancel font-size-16 font-regular"
-                                data-bs-dismiss="modal">Cancel</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <script>
         var table = $('#socialMedia').DataTable({
@@ -230,93 +140,9 @@
             $('#searchSocialMediaIcon').on('keyup', function() {
                 table.column(2).search(this.value).draw();
             });
-            // Handle form submission (to update data)
-            $('#editForm').on('submit', function(e) {
-                e.preventDefault();
-
-                var socialMediaId = $('#social_media_id').val(); // Get the ID from the edit button
-                var updateUrl = '{{ route('doctor.updateSocialMedia', ':id') }}'.replace(':id',
-                    socialMediaId);
-                // Send the updated data to the server via AJAX
-                $.ajax({
-                    url: updateUrl, // Adjust with your update route
-                    method: 'PUT',
-                    data: $(this).serialize(),
-                    success: function(response) {
-
-                        $('#editModal').modal('hide');
-                        $('#show_messages').html('<div class="alert alert-success">' + response
-                            .message +
-                            '</div>');
-                        table.ajax.reload();
-                    },
-                    error: function(xhr) {
-                        // Show validation error messages
-                        var errors = xhr.responseJSON.errors;
-                        var errorMessages = '';
-                        for (var key in errors) {
-                            if (errors.hasOwnProperty(key)) {
-                                errorMessages += errors[key].join('<br>') + '<br>';
-                            }
-                        }
-
-                        // Display error messages in your modal or alert box
-                        $('#validationErrors').html(
-                            errorMessages
-                        ); // Assuming you have an element for errors in your modal
-                    }
-                });
-            });
+            
         });
-        // Open the modal on Edit button click
-        function edit_popup(socialMediaId) {
-            var editUrl = '{{ route('doctor.editGetSocialMedia', ':id') }}'.replace(':id', socialMediaId);
-            $.ajax({
-                url: editUrl,
-                method: 'GET',
-                success: function(data) {
-                    // Populate the modal fields with the fetched data
-                    $('#youtube_link').val(data.youtube_link);
-                    $('#facebook_link').val(data.facebook_link);
-                    $('#linkdin_link').val(data.linkdin_link);
-                    $('#instagram_link').val(data.instagram_link);
-                    $('#social_media_id').val(data.id);
-
-                    // Open the modal
-                    $('#editModal').modal('show');
-                }
-            });
-        }
-
-        function delete_social_media(socialMediaId) {
-            // Show confirmation popup
-            if (confirm("Are you sure you want to delete this Social Media?")) {
-                // Make AJAX request to delete the medicine
-                var deleteUrl = '{{ route('social-media.delete', ':id') }}'.replace(':id', socialMediaId);
-                var token = $('meta[name="csrf-token"]').attr('content');
-                $.ajax({
-                    url: deleteUrl,
-                    method: 'DELETE',
-                    headers: {
-                        'X-CSRF-TOKEN': token
-                    },
-                    success: function(response) {
-                        $('#show_messages').html('<div class="alert alert-success">' + response.message +
-                            '</div>');
-                        table.ajax.reload();
-                    },
-                    error: function(xhr) {
-                        $('#show_messages').html(
-                            '<div class="alert alert-danger">An error occurred while deleting the Social Media. Please try again.</div>'
-                        );
-                    }
-                });
-            } else {
-                $('#show_messages').html(
-                    '<div class="alert alert-danger">Medicine deletion was canceled</div>'
-                );
-            }
-        }
+   
 
 
         function autocomplete(inp, arr) {

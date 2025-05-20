@@ -40,7 +40,7 @@
                                 @csrf
                                 @method('PUT')
                                 <div class="row">
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-12">
                                         <div class="mb-3">
                                             <label class="mb-2">Award Name</label>
                                             <input type="text" class="form-control form-input-control" name="award_name"
@@ -50,7 +50,7 @@
                                             Please enter Award Name
                                         </div>
                                     </div>
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-12">
                                         <div class="mb-3">
                                             <label for="awarded_year" class="mb-2">Awarded Year</label>
                                             <input type="number" class="form-control form-input-control" name="awarded_year"
@@ -61,7 +61,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-12">
                                         <div class="mb-3">
                                             <label class="mb-2">Upload Certificate</label>
                                             <input type="file" class="form-control form-input-control"

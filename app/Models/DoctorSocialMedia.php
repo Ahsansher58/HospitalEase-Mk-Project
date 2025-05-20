@@ -15,5 +15,7 @@ class DoctorSocialMedia extends Model
     'facebook_link',
     'linkdin_link',
     'instagram_link',
+    'whatsapp_link',
+    'telegram_link',
   ];
 }

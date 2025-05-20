@@ -123,7 +123,9 @@ class DoctorController extends Controller
       return redirect('/');
     }
     $user = Auth::user();
-    return view('frontend.content.doctors.social_media', compact('user'));
+    $doctor      = Doctor::where('user_id' , $user->id)->first();
+    $social_media = DoctorSocialMedia::where('doctor_id' , $doctor->id)->first();
+    return view('frontend.content.doctors.social_media', compact('user','social_media'));
   }
 
 
@@ -135,21 +137,34 @@ class DoctorController extends Controller
       'facebook_link'  => 'nullable|string|max:255',
       'linkdin_link'   => 'nullable|string|max:255',
       'instagram_link' => 'nullable|string|max:255',
+      'whatsapp_link'   => 'nullable|string|max:255',
+      'telegram_link' => 'nullable|string|max:255',
     ]);
 
     // Create a new record with the authenticated user's ID
     $user   = Auth::user();
     $doctor = Doctor::where('user_id' , $user->id)->first();
-    DoctorSocialMedia::create([
-      'doctor_id'      => $doctor->id,
-      'youtube_link'   => $validatedData['youtube_link'],
-      'facebook_link'  => $validatedData['facebook_link'],
-      'linkdin_link'   => $validatedData['linkdin_link'],
-      'instagram_link' => $validatedData['instagram_link'],
-    ]);
+    // DoctorSocialMedia::create([
+    //   'doctor_id'      => $doctor->id,
+    //   'youtube_link'   => $validatedData['youtube_link'],
+    //   'facebook_link'  => $validatedData['facebook_link'],
+    //   'linkdin_link'   => $validatedData['linkdin_link'],
+    //   'instagram_link' => $validatedData['instagram_link'],
+    // ]);
+
+      if (!$doctor) {
+          return redirect()->back()->with('error', 'Doctor profile not found.');
+      }
+
+      // Use updateOrCreate to update if exists, or create if not
+      DoctorSocialMedia::updateOrCreate(
+          ['doctor_id' => $doctor->id],  
+          $validatedData               
+      );
+
 
     // Redirect back with success message
-    return redirect()->route('doctor.social-media')->with('success', 'Social Media added successfully');
+    return redirect()->route('doctor.social-media')->with('success', 'Social Media link updated successfully.');
   }
 
   

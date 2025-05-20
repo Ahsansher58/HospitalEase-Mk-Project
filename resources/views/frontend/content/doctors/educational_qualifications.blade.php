@@ -157,7 +157,7 @@
                     <form id="AppointmentForm" method="POST" action="{{ route('doctor.EducationalQualificationsStore') }}"  enctype="multipart/form-data">
                         @csrf
                         <div class="row">
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-12">
                                         <div class="mb-3">
                                             <label class="mb-2">College Name</label>
                                             <input type="text" class="form-control form-input-control" name="college_name" required>
@@ -166,7 +166,7 @@
                                             Please enter College Name
                                         </div>
                                     </div>
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-12">
                                         <div class="mb-3">
                                             <label for="year_studied" class="mb-2">Years Studied</label>
                                             <input type="number" class="form-control form-input-control" name="year_studied" required>
@@ -175,7 +175,7 @@
                                             Please enter Years Studied
                                         </div>
                                     </div>
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-12">
                                         <div class="mb-3">
                                             <label for="degree" class="mb-2">Degree Achieved</label>
                                             <input type="text" class="form-control form-input-control"
@@ -185,7 +185,7 @@
                                             Please enter Degree Achieved
                                         </div>
                                     </div>
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-12">
                                         <div class="mb-3">
                                             <label class="mb-2">Upload Certificate</label>
                                             <input type="file" class="form-control form-input-control"
@@ -195,7 +195,7 @@
                                             Please Upload Certificate
                                         </div>
                                     </div>
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-12">
                                         <label class="form-label" for="show_certificate_in_public">Show Certificate in public?</label>
                                         <div>
                                             <div class="form-check form-check-inline">
